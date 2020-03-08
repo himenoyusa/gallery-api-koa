@@ -1,0 +1,30 @@
+{
+  "name": "setu-api",
+  "version": "1.0.0",
+  "description": "api for setu project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "nodemon": "nodemon app.js"
+  },
+  "keywords": [
+    "koa",
+    "async"
+  ],
+  "author": "yusa_kanata",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/"
+  },
+  "dependencies": {
+    "koa": "2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^8.0.8",
+    "koa-static": "^5.0.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "nodemon": "^2.0.2",
+    "sequelize": "^5.21.5"
+  }
+}
