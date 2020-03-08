@@ -1,20 +1,8 @@
 const Sequelize = require("sequelize");
-const config = require("../config");
+const sequelize = require("./index");
 
-var sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  {
-    host: config.host,
-    dialect: "mysql",
-    pool: {
-      max: 5,
-      min: 0,
-      idle: 30000
-    }
-  }
-);
+const PageSize = 9;
+const BoxSize = 3;
 
 var Picture = sequelize.define(
   "picture",
@@ -38,15 +26,58 @@ var Picture = sequelize.define(
 );
 
 module.exports = {
+  // 获取首页图片组
+  getThumbList: async (orderType = "", page = 1) => {
+    const off = (page - 1) * PageSize;
+    switch (orderType) {
+      case "time":
+        var orderArray = ["create_time", "ASC"];
+        break;
+      case "score":
+        var orderArray = ["total_score", "DESC"];
+        break;
+      default:
+        var orderArray = ["create_time", "DESC"];
+    }
+    return Picture.findAll({
+      order: [orderArray],
+      offset: off,
+      limit: PageSize
+    });
+  },
+  // 获取首页跑马灯图片
+  getPictureBox: async () => {
+    return Picture.findAll({
+      order: sequelize.random(),
+      limit: BoxSize
+    });
+  },
+  // 获取单张图片
   get: async pid => {
-    var picture = await Picture.findAll({
+    return await Picture.findOne({
       where: {
         picture_id: 1
       }
     });
-    for (let p of picture) {
-      console.log(JSON.stringify(p));
-      return p;
-    }
+  },
+  upload: async () => {
+    await Picture.create({}).then();
+  },
+  update: async pid => {
+    await Picture.update(
+      {},
+      {
+        where: { picture_id: pid }
+      }
+    ).then(() => {
+      return true;
+    });
+  },
+  delete: async pid => {
+    await Picture.destroy({
+      where: { picture_id: pid }
+    }).then(() => {
+      return true;
+    });
   }
 };

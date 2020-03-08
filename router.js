@@ -1,5 +1,7 @@
 const router = require("koa-router")({ prefix: "/api" });
+
 const PictureController = require("./controllers/picture");
+const UserController = require("./controllers/user");
 
 module.exports = app => {
   router.all("/*", async (ctx, next) => {
@@ -9,12 +11,17 @@ module.exports = app => {
     await next();
   });
 
-  router.get("/", async (ctx, next) => {
-    ctx.body = `<h1>404</h1>`;
-  });
-
   // picture
+  router.get("/thumbList/:orderType?/:page?", PictureController.getThumbList);
+  router.get("/pictureBox", PictureController.getPictureBox);
   router.get("/picture/:pid", PictureController.get);
+
+  // tag
+
+  // score
+
+  // user
+  router.post("/login", UserController.login);
 
   app.use(router.routes()).use(router.allowedMethods());
 };
