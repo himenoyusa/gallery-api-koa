@@ -66,5 +66,11 @@ module.exports = {
     userInfo.push(token);
     return userInfo;
   },
-  checkUser: async () => {}
+  checkUser: async token => {
+    var user = await User.findOne({
+      where: {
+        user_token: token
+      }
+    });
+  }
 };
