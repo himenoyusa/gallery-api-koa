@@ -22,5 +22,11 @@ module.exports = {
       data: list,
       status: true
     };
+  },
+  upload: async ctx => {
+    return true;
+  },
+  delete: async ctx => {
+    return true;
   }
 };
