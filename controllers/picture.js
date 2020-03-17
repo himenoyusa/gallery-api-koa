@@ -1,4 +1,5 @@
 const PictureModel = require("../models/Picture");
+// const HttpException = require(`${process.cwd()}/core/HttpException`);
 
 module.exports = {
   // 获取单张图片
@@ -7,6 +8,7 @@ module.exports = {
     ctx.response.body = { data: picture };
   },
   getThumbList: async ctx => {
+    // throw new HttpException("api error", 2000, 500);
     let list = await PictureModel.getThumbList(
       ctx.params.orderType,
       ctx.params.page
