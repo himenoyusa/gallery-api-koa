@@ -1,4 +1,7 @@
 const UserModel = require("../models/User");
+const {
+  RegisterValidator
+} = require(`${process.cwd()}/app/validators/validator`);
 
 module.exports = {
   login: async ctx => {
@@ -18,5 +21,8 @@ module.exports = {
       };
     }
   },
-  checkUser: async ctx => {}
+  checkUser: async ctx => {},
+  register: async ctx => {
+    const v = new RegisterValidator().validate(ctx);
+  }
 };

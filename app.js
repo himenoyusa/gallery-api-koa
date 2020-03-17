@@ -1,8 +1,8 @@
 const Koa = require("koa");
 const InitManager = require("./core/init");
-const middleware = require("./middleware");
+// const middleware = require("./middleware");
 const router = require("koa-router")();
-const catchError = require("./middlewares/exception");
+const catchError = require("./middleware/exception");
 
 const app = new Koa();
 app.use(async (ctx, next) => {
@@ -21,10 +21,9 @@ router.all("/*", async (ctx, next) => {
   // 其他一些设置...
   await next();
 });
+app.use(router.routes()).use(router.allowedMethods());
 
 app.use(catchError);
-
-app.use(router.routes()).use(router.allowedMethods());
 
 InitManager.initCore(app);
 

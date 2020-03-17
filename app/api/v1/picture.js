@@ -1,5 +1,5 @@
 const router = require("koa-router")({ prefix: "/api" });
-const PictureController = require(`${process.cwd()}/controllers/picture`);
+const PictureController = require(`${process.cwd()}/app/controllers/picture`);
 
 router.get(
   "/thumbList/:orderType?/:page?/:r18?",

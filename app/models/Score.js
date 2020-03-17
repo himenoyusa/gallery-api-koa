@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const { Sequelize, Model } = require("sequelize");
 const sequelize = require("./index");
 
 var Score = sequelize.define(
@@ -19,6 +19,8 @@ var Score = sequelize.define(
     timestamps: false
   }
 );
+
+class Score1 extends Model {}
 
 module.exports = {
   // 获取单张图片所有 score
