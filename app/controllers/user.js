@@ -24,5 +24,6 @@ module.exports = {
   checkUser: async ctx => {},
   register: async ctx => {
     const v = new RegisterValidator().validate(ctx);
+    ctx.body = v;
   }
 };
