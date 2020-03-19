@@ -1,5 +1,6 @@
 const { HttpException } = require(`${process.cwd()}/core/http-exception`);
 
+// 全局错误处理
 const catchError = async (ctx, next) => {
   try {
     await next();

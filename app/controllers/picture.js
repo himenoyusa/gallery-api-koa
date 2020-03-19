@@ -24,9 +24,9 @@ module.exports = {
     };
   },
   upload: async ctx => {
-    return true;
+    throw new Error("TODO");
   },
   delete: async ctx => {
-    return true;
+    throw new Error("TODO");
   }
 };

@@ -1,8 +1,8 @@
-const router = require("koa-router")({ prefix: "/api" });
+const router = require("koa-router")({ prefix: "/api/score" });
 const ScoreController = require(`${process.cwd()}/app/controllers/score`);
 
-router.get("/thumbList/:orderType?/:page?", ScoreController.get);
-router.post("/pictureBox", ScoreController.upload);
-router.delete("/picture/:pid", ScoreController.delete);
+router.get("/:sid", ScoreController.get);
+router.post("/", ScoreController.upload);
+router.delete("/:sid", ScoreController.delete);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const Koa = require("koa");
 const InitManager = require("./core/init");
 // const middleware = require("./middleware");
 const router = require("koa-router")();
-const catchError = require("./middleware/exception");
+const catchError = require("./middlewares/exception");
 
 const app = new Koa();
 app.use(async (ctx, next) => {
@@ -10,21 +10,22 @@ app.use(async (ctx, next) => {
   await next();
 });
 
+// 跨域设置
 router.all("/*", async (ctx, next) => {
-  // *代表允许来自所有域名请求
   ctx.set("Access-Control-Allow-Origin", "*");
   ctx.set("Access-Control-Allow-Credentials", "true");
   ctx.set(
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization, x-requested-with"
   );
-  // 其他一些设置...
   await next();
 });
 app.use(router.routes()).use(router.allowedMethods());
 
+// 全局错误处理
 app.use(catchError);
 
+// 初始化应用
 InitManager.initCore(app);
 
 // middleware(app);

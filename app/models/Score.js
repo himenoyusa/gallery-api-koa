@@ -25,7 +25,7 @@ class Score1 extends Model {}
 module.exports = {
   // 获取单张图片所有 score
   getOnePictureScore: async pid => {
-    return Score.findAll({
+    return await Score.findAll({
       where: {
         picture_id: pid
       }
