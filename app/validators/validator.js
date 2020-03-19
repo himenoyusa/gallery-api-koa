@@ -1,4 +1,9 @@
-const { LinValidator, Rule } = require(`${process.cwd()}/core/lin-validator`);
+const {
+  LinValidator,
+  Rule
+} = require(`${process.cwd()}/core/lin-validator-v2`);
+
+const { LoginType } = require(`${process.cwd()}/app/lib/enum.js`);
 
 class PositiveIntegerValidator extends LinValidator {
   constructor() {
@@ -29,4 +34,29 @@ class RegisterValidator extends LinValidator {
   }
 }
 
-module.exports = { PositiveIntegerValidator, RegisterValidator };
+class TokenValidator extends LinValidator {
+  constructor() {
+    super();
+    this.account = [new Rule("isLength", "账号长度有误", { min: 4, max: 32 })];
+    this.secret = [
+      new Rule("isOptional"),
+      new Rule("isLength", "密码长度有误", { min: 6, max: 128 })
+    ];
+    this.type = []; // 登录方式
+  }
+
+  validateLoginType(vals) {
+    if (!vals.body.type) {
+      throw new Error("type 是必须参数");
+    }
+    if (!LoginType.isThisType(vals.body.type)) {
+      throw new Error("type不合法");
+    }
+  }
+}
+
+module.exports = {
+  PositiveIntegerValidator,
+  RegisterValidator,
+  TokenValidator
+};
