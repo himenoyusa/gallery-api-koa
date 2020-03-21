@@ -12,7 +12,7 @@ const {
 module.exports = {
   login: async ctx => {
     const v = await new TokenValidator().validate(ctx);
-    var user = await UserModel.login(v.body.account, v.body.secret);
+    var user = await UserModel.login(v.account, v.secret);
     if (!user) {
       throw new ParameterException("账号或密码错误");
     } else {

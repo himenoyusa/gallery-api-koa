@@ -1,7 +1,4 @@
-const {
-  LinValidator,
-  Rule
-} = require(`${process.cwd()}/core/lin-validator-v2`);
+const { LinValidator, Rule } = require(`${process.cwd()}/core/lin-validator`);
 
 const { LoginType } = require(`${process.cwd()}/app/lib/enum.js`);
 
