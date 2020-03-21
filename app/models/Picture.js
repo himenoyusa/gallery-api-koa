@@ -26,8 +26,10 @@ var Picture = sequelize.define(
 );
 
 module.exports = {
-  // 获取首页图片组
-  getThumbList: async (orderType = "", page = 1) => {
+  /**
+   * 获取首页图片缩略图
+   */
+  getThumbList: async (orderType = "", page = 1, r18) => {
     const off = (page - 1) * PageSize;
     switch (orderType) {
       case "time":
@@ -40,44 +42,56 @@ module.exports = {
         var orderArray = ["create_time", "DESC"];
     }
     return Picture.findAll({
+      where: {
+        r18
+      },
       order: [orderArray],
       offset: off,
       limit: PageSize
     });
   },
-  // 获取首页跑马灯图片
+  /**
+   * 获取首页跑马灯随机图
+   */
   getPictureBox: async () => {
     return Picture.findAll({
       order: sequelize.random(),
       limit: BoxSize
     });
   },
-  // 获取单张图片
-  get: async pid => {
+  /**
+   * 获取单张图片
+   */
+  get: async picture_id => {
     return await Picture.findOne({
       where: {
-        picture_id: 1
+        picture_id
       }
     });
   },
+  /**
+   * 上传图片
+   */
   upload: async () => {
     await Picture.create({}).then();
   },
-  update: async pid => {
+  /**
+   * 更新图片信息
+   */
+  update: async picture_id => {
     await Picture.update(
       {},
       {
-        where: { picture_id: pid }
+        where: { picture_id }
       }
     ).then(() => {
       return true;
     });
   },
+  /**
+   * 删除图片
+   */
   delete: async pid => {
-    await Picture.destroy({
-      where: { picture_id: pid }
-    }).then(() => {
-      return true;
-    });
+    return await Picture.destroy(pid);
   }
 };

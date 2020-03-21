@@ -2,14 +2,15 @@ const router = require("koa-router")({ prefix: "/api" });
 const PictureController = require(`${process.cwd()}/app/controllers/picture`);
 const Auth = require(`${process.cwd()}/middlewares/auth`);
 
+router.get("/thumbList/:orderType?/:page?", PictureController.getThumbList);
 router.get(
-  "/thumbList/:orderType?/:page?/:r18?",
+  "/R18thumbList/:orderType?/:page?",
   new Auth().m,
-  PictureController.getThumbList
+  PictureController.getR18ThumbList
 );
 router.get("/pictureBox", PictureController.getPictureBox);
 router.get("/picture/:pid", PictureController.get);
-router.post("/picture/", new Auth().m, PictureController.upload);
+router.post("/picture/", new Auth().m, PictureController.upload); // TODO: 图片上传
 router.delete("/picture/:pid", new Auth().m, PictureController.delete);
 
 module.exports = router;

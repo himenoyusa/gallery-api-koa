@@ -20,35 +20,37 @@ var Score = sequelize.define(
   }
 );
 
-class Score1 extends Model {}
-
 module.exports = {
-  // 获取单张图片所有 score
-  getOnePictureScore: async pid => {
+  /**
+   * 获取单张图片所有 score
+   */
+  getOnePictureScore: async picture_id => {
     return await Score.findAll({
       where: {
-        picture_id: pid
+        picture_id
       }
     });
   },
-  upload: async () => {
-    await Score.create({}).then();
-  },
-  update: async pid => {
-    await Score.update(
-      {},
-      {
-        where: { picture_id: pid }
-      }
-    ).then(() => {
-      return true;
+  /**
+   * 新增 score
+   */
+  upload: async (picture_id, score, create_by) => {
+    const time = Math.round(new Date().getTime() / 1000);
+    return await Score.create({
+      picture_id,
+      score,
+      create_by,
+      create_time: time
     });
   },
-  delete: async pid => {
-    await Score.destroy({
-      where: { picture_id: pid }
-    }).then(() => {
-      return true;
-    });
+  /**
+   * 更新 score
+   */
+  update: async pid => {},
+  /**
+   * 删除 score
+   */
+  delete: async sid => {
+    return await Score.destroy(sid);
   }
 };

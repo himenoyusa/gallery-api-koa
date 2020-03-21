@@ -18,27 +18,30 @@ class ParameterException extends HttpException {
 }
 
 class Success extends HttpException {
-  constructor(msg = "", statusCode = 200) {
+  constructor(msg = "操作成功", statusCode = 200) {
     super();
     this.errorCode = 2000;
     this.statusCode = statusCode;
-    this.msg = msg || "操作成功";
+    this.msg = msg;
   }
 }
 
 class Response extends HttpException {
   constructor(data = {}) {
     super();
+    if (!data) {
+      throw new Forbidden("找不到数据", 404);
+    }
     this.data = data;
     this.statusCode = 200;
   }
 }
 
 class Forbidden extends HttpException {
-  constructor(msg = "禁止访问") {
+  constructor(msg = "禁止访问", statusCode = 403) {
     super();
     this.msg = msg;
-    this.statusCode = 403;
+    this.statusCode = statusCode;
   }
 }
 
