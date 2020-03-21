@@ -5,6 +5,7 @@ const {
   HttpException,
   Forbidden
 } = require(`${process.cwd()}/core/http-exception`);
+const { PidValidator } = require(`${process.cwd()}/app/validators/validator`);
 
 module.exports = {
   /**
@@ -42,7 +43,8 @@ module.exports = {
    * 获取单张图片
    */
   get: async ctx => {
-    let picture = await PictureModel.get(ctx.params.pid);
+    const v = await new PidValidator().validate(ctx);
+    let picture = await PictureModel.get(v.get("path.pid"));
     throw new Response(picture);
   },
   /**
@@ -55,7 +57,8 @@ module.exports = {
    * 删除图片
    */
   delete: async ctx => {
-    let result = await PictureModel.delete(ctx.params.pid);
+    const v = await new PidValidator().validate(ctx);
+    let result = await PictureModel.delete(v.get("path.pid"));
     if (result) {
       throw new Success("图片删除成功");
     }

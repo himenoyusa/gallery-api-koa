@@ -52,8 +52,16 @@ class LoginValidator extends LinValidator {
   // }
 }
 
+class PidValidator extends LinValidator {
+  constructor() {
+    super();
+    this.pid = [new Rule("isInt", "图片 id 错误", { min: 1 })];
+  }
+}
+
 module.exports = {
   PositiveIntegerValidator,
   RegisterValidator,
-  LoginValidator
+  LoginValidator,
+  PidValidator
 };

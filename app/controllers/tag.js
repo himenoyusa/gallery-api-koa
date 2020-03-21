@@ -4,13 +4,15 @@ const {
   HttpException,
   Success
 } = require(`${process.cwd()}/core/http-exception`);
+const { PidValidator } = require(`${process.cwd()}/app/validators/validator`);
 
 module.exports = {
   /**
    * 获取单张图片所有 tag
    */
   getOnePictureTag: async ctx => {
-    let tags = await TagModel.getOnePictureTag(ctx.params.pid);
+    const v = await new PidValidator().validate(ctx);
+    let tags = await TagModel.getOnePictureTag(v.get("path.pid"));
     throw new Response(tags);
   },
   /**
