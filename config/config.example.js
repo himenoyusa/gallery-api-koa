@@ -6,7 +6,8 @@ var config = {
     host: "localhost",
     port: 3306
   },
-  environment: "dev" // or prod
+  environment: "dev", // or prod
+  secretKey: "123456"
 };
 
 module.exports = config;

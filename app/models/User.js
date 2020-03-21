@@ -2,15 +2,10 @@ const Sequelize = require("sequelize");
 const sequelize = require("./index");
 
 const jwt = require("jsonwebtoken");
-const jwtKoa = require("koa-jwt");
-const util = require("util");
+// const jwtKoa = require("koa-jwt");
 const bcrypt = require("bcrypt");
-const verify = util.promisify(jwt.verify); // 解密
-const secret = "yusa_kanata";
 
-const PageSize = 9;
-const BoxSize = 3;
-
+// 初始化模型
 var User = sequelize.define(
   "user",
   {
@@ -49,13 +44,13 @@ module.exports = {
       return false;
     }
 
-    var userInfo = [user.u_id, user.u_account, user.u_avatar, user.u_level];
+    var tokenInfo = [user.u_id, user.u_account, user.u_avatar, user.u_level];
     var token = jwt.sign(
       {
-        data: userInfo,
+        data: tokenInfo,
         exp: Math.floor(Date.now() / 1000) + 60 * 60
       },
-      secret
+      global.config.secretKey
     );
     // save the token
     (async () => {
@@ -63,10 +58,20 @@ module.exports = {
       await user.save();
     })();
 
-    userInfo.push(token);
+    userInfo = {
+      userID: user.u_id,
+      account: user.u_account,
+      userLevel: user.u_level,
+      avatar: user.u_avatar,
+      token
+    };
     return userInfo;
   },
-  checkUser: async token => {
+
+  // TODO: 用户登出
+  logout: async () => {},
+  // TODO: 验证 api 访问权限
+  checkToken: async token => {
     var user = await User.findOne({
       where: {
         user_token: token

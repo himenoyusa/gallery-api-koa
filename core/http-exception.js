@@ -1,8 +1,9 @@
 class HttpException extends Error {
-  constructor(msg = "", errorCode = 2000, statusCode = 200) {
+  constructor(msg = "", data = {}, errorCode = 2000, statusCode = 200) {
     super();
     this.errorCode = errorCode;
     this.statusCode = statusCode;
+    this.data = data;
     this.msg = msg;
   }
 }
@@ -25,8 +26,26 @@ class Success extends HttpException {
   }
 }
 
+class Response extends HttpException {
+  constructor(data = {}) {
+    super();
+    this.data = data;
+    this.statusCode = 200;
+  }
+}
+
+class Forbidden extends HttpException {
+  constructor(msg = "禁止访问") {
+    super();
+    this.msg = msg;
+    this.statusCode = 403;
+  }
+}
+
 module.exports = {
   HttpException: HttpException,
   ParameterException: ParameterException,
-  Success
+  Success,
+  Response,
+  Forbidden
 };

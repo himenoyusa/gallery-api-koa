@@ -14,6 +14,7 @@ const catchError = async (ctx, next) => {
       ctx.body = {
         errorCode: e.errorCode,
         msg: e.msg,
+        data: e.data,
         request: `${ctx.method} ${ctx.path}`
       };
       ctx.status = e.statusCode;

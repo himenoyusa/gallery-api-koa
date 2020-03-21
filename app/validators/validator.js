@@ -31,7 +31,7 @@ class RegisterValidator extends LinValidator {
   }
 }
 
-class TokenValidator extends LinValidator {
+class LoginValidator extends LinValidator {
   constructor() {
     super();
     this.account = [new Rule("isLength", "账号长度有误", { min: 4, max: 32 })];
@@ -55,5 +55,5 @@ class TokenValidator extends LinValidator {
 module.exports = {
   PositiveIntegerValidator,
   RegisterValidator,
-  TokenValidator
+  LoginValidator
 };
