@@ -1,4 +1,4 @@
-const { Sequelize, Model } = require("sequelize");
+const Sequelize = require("sequelize");
 const sequelize = require("./index");
 
 var Score = sequelize.define(

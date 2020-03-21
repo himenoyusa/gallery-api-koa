@@ -1,32 +1,41 @@
-const PictureModel = require("../models/Picture");
+const TagModel = require("../models/Tag");
+const {
+  Response,
+  HttpException,
+  Success
+} = require(`${process.cwd()}/core/http-exception`);
 
 module.exports = {
-  // 获取单张图片
-  get: async ctx => {
-    let picture = await PictureModel.get(ctx.params.pid);
-    ctx.response.body = { data: picture };
+  /**
+   * 获取单张图片所有 tag
+   */
+  getOnePictureTag: async ctx => {
+    let tags = await TagModel.getOnePictureTag(ctx.params.pid);
+    throw new Response(tags);
   },
-  getThumbList: async ctx => {
-    let list = await PictureModel.getThumbList(
-      ctx.params.orderType,
-      ctx.params.page
-    );
-    ctx.response.body = {
-      data: list,
-      status: true
-    };
-  },
-  getPictureBox: async ctx => {
-    let list = await PictureModel.getPictureBox();
-    ctx.response.body = {
-      data: list,
-      status: true
-    };
-  },
+  /**
+   * 新增 tag
+   */
   upload: async ctx => {
-    return true;
+    const uid = 1; // TODO: 存入当前用户 ID
+    let result = await TagModel.upload(
+      ctx.request.body.pid,
+      ctx.request.body.tag,
+      uid
+    );
+    if (result) {
+      throw new Success("Tag 添加成功");
+    }
+    throw new HttpException("Tag 添加失败");
   },
+  /**
+   * 删除 tag
+   */
   delete: async ctx => {
-    return true;
+    let result = await TagModel.delete(ctx.params.tid);
+    if (result) {
+      throw new Success("Tag 删除成功");
+    }
+    throw new HttpException("Tag 删除失败");
   }
 };

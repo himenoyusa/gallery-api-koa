@@ -18,32 +18,43 @@ var Tag = sequelize.define(
 );
 
 module.exports = {
-  // 获取单张图片所有 tag
-  getOnePictureTag: async pid => {
+  /**
+   * 获取单张图片所有 tag
+   */
+  getOnePictureTag: async picture_id => {
     return Tag.findAll({
       where: {
-        picture_id: pid
+        picture_id
       }
     });
   },
-  upload: async () => {
-    await Tag.create({}).then();
+  /**
+   * 新增 tag
+   */
+  upload: async (picture_id, tag, create_by) => {
+    return await Tag.create({
+      picture_id,
+      tag,
+      create_by
+    });
   },
-  update: async pid => {
+  /**
+   * 更新 tag
+   */
+  update: async picture_id => {
     await Tag.update(
       {},
       {
-        where: { picture_id: pid }
+        where: { picture_id }
       }
     ).then(() => {
       return true;
     });
   },
-  delete: async pid => {
-    await Tag.destroy({
-      where: { picture_id: pid }
-    }).then(() => {
-      return true;
-    });
+  /**
+   * 删除 tag
+   */
+  delete: async tid => {
+    return await Tag.destroy(tid);
   }
 };
