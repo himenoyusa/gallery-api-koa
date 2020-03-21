@@ -1,9 +1,11 @@
 const requireDirectory = require("require-directory");
 const Router = require("koa-router");
+const bodyParser = require("koa-bodyparser");
 
 class InitManager {
   static initCore(app) {
     // 入口方法
+    app.use(bodyParser());
     InitManager.loadConfig();
     InitManager.initLoadRouters(app);
   }

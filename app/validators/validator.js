@@ -39,20 +39,20 @@ class TokenValidator extends LinValidator {
     super();
     this.account = [new Rule("isLength", "账号长度有误", { min: 4, max: 32 })];
     this.secret = [
-      new Rule("isOptional"),
+      // new Rule("isOptional"),
       new Rule("isLength", "密码长度有误", { min: 6, max: 128 })
     ];
-    this.type = []; // 登录方式
+    // this.type = []; // 登录方式
   }
 
-  validateLoginType(vals) {
-    if (!vals.body.type) {
-      throw new Error("type 是必须参数");
-    }
-    if (!LoginType.isThisType(vals.body.type)) {
-      throw new Error("type不合法");
-    }
-  }
+  // validateLoginType(vals) {
+  //   if (!vals.body.type) {
+  //     throw new Error("type 是必须参数");
+  //   }
+  //   if (!LoginType.isThisType(vals.body.type)) {
+  //     throw new Error("type不合法");
+  //   }
+  // }
 }
 
 module.exports = {

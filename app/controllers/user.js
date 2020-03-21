@@ -1,24 +1,22 @@
-const UserModel = require("../models/User");
+const UserModel = require(`${process.cwd()}/app/models/User`);
+
 const {
+  TokenValidator,
   RegisterValidator
 } = require(`${process.cwd()}/app/validators/validator`);
+const {
+  Success,
+  ParameterException
+} = require(`${process.cwd()}/core/http-exception`);
 
 module.exports = {
   login: async ctx => {
-    var { username } = ctx.request.body.params || "";
-    var { password } = ctx.request.body.params || "";
-    var user = await UserModel.login(username, password);
+    const v = await new TokenValidator().validate(ctx);
+    var user = await UserModel.login(v.body.account, v.body.secret);
     if (!user) {
-      ctx.status = 401;
-      ctx.body = {
-        status: false,
-        message: "信息错误，登录失败"
-      };
+      throw new ParameterException("账号或密码错误");
     } else {
-      ctx.body = {
-        data: user,
-        status: true
-      };
+      throw new Success("登录成功");
     }
   },
   checkUser: async ctx => {},
