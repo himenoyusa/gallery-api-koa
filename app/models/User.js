@@ -27,7 +27,7 @@ var User = sequelize.define(
 );
 
 module.exports = {
-  login: async (username, password) => {
+  login: async (username, password, remember) => {
     var user = await User.findOne({
       where: {
         u_account: username
@@ -45,10 +45,17 @@ module.exports = {
     }
 
     var tokenInfo = [user.u_id, user.u_account, user.u_avatar, user.u_level];
+    if (remember) {
+      // 设置登录失效时间为一个月
+      var exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
+    } else {
+      // 设置登录失效时间为一天
+      var exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24;
+    }
     var token = jwt.sign(
       {
         data: tokenInfo,
-        exp: Math.floor(Date.now() / 1000) + 60 * 60
+        exp
       },
       global.config.secretKey
     );

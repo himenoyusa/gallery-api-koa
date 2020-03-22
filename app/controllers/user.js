@@ -15,7 +15,8 @@ module.exports = {
     const v = await new LoginValidator().validate(ctx);
     const account = v.get("body.account");
     const secret = v.get("body.secret");
-    var user = await UserModel.login(account, secret);
+    const remember = v.get("body.remember") || false;
+    var user = await UserModel.login(account, secret, remember);
     if (!user) {
       throw new ParameterException("账号或密码错误");
     } else {

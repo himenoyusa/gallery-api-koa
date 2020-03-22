@@ -18,7 +18,7 @@ class Auth {
             try {
               const decoded = jwt.verify(token, global.config.secretKey);
               // TODO: 进一步验证身份
-              // console.log(decoded);
+              console.log(decoded);
             } catch (e) {
               throw new Forbidden("token无效");
             }
@@ -26,6 +26,7 @@ class Auth {
           }
         }
       }
+      throw new Forbidden("token无效");
     };
   }
 }
