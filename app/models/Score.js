@@ -50,7 +50,7 @@ module.exports = {
   /**
    * 删除 score
    */
-  delete: async sid => {
-    return await Score.destroy(sid);
+  delete: async score_id => {
+    return await Score.destroy({ where: { score_id } });
   }
 };

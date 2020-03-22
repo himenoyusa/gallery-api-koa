@@ -37,7 +37,7 @@ class LoginValidator extends LinValidator {
     this.account = [new Rule("isLength", "账号长度有误", { min: 4, max: 32 })];
     this.secret = [
       // new Rule("isOptional"),
-      new Rule("isLength", "密码长度有误", { min: 6, max: 128 })
+      new Rule("isLength", "密码长度有误", { min: 6, max: 64 })
     ];
     // this.type = []; // 登录方式
   }

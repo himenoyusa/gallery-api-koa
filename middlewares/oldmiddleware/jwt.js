@@ -15,7 +15,7 @@ module.exports = app => {
     });
   });
 
-  /* app.use(async (ctx, next) => {
+  app.use(async (ctx, next) => {
     if (ctx.header && ctx.header.authorization) {
       const parts = ctx.header.authorization.split(" ");
       if (parts.length === 2) {
@@ -37,7 +37,7 @@ module.exports = app => {
         }
       }
     }
-  }); */
+  });
 
   // TODO： jwt 验证功能待完善
   app.use(

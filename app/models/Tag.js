@@ -54,7 +54,7 @@ module.exports = {
   /**
    * 删除 tag
    */
-  delete: async tid => {
-    return await Tag.destroy(tid);
+  delete: async tag_id => {
+    return await Tag.destroy({ where: { tag_id } });
   }
 };
