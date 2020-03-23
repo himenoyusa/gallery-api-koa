@@ -10,7 +10,7 @@ const {
 } = require(`${process.cwd()}/core/http-exception`);
 
 module.exports = {
-  // 登录，成功时返回 token
+  // 登录，成功时返回用户信息
   login: async ctx => {
     const v = await new LoginValidator().validate(ctx);
     const account = v.get("body.account");
@@ -23,7 +23,9 @@ module.exports = {
       throw new Response(user); // 将 user 信息返回客户端
     }
   },
+  // TODO: 注销
   logout: async ctx => {},
+  // TODO：注册
   register: async ctx => {
     const v = new RegisterValidator().validate(ctx);
     ctx.body = v;
