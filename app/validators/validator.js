@@ -34,8 +34,8 @@ class RegisterValidator extends LinValidator {
 class LoginValidator extends LinValidator {
   constructor() {
     super();
-    this.account = [new Rule("isLength", "账号长度有误", { min: 4, max: 32 })];
-    this.secret = [
+    this.username = [new Rule("isLength", "账号长度有误", { min: 4, max: 32 })];
+    this.password = [
       // new Rule("isOptional"),
       new Rule("isLength", "密码长度有误", { min: 6, max: 64 })
     ];

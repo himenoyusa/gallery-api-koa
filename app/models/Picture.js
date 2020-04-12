@@ -41,7 +41,7 @@ module.exports = {
       default:
         var orderArray = ["create_time", "DESC"];
     }
-    return Picture.findAll({
+    let result = await Picture.findAndCountAll({
       where: {
         r18
       },
@@ -49,12 +49,18 @@ module.exports = {
       offset: off,
       limit: PageSize
     });
+    const total = result.count;
+    const thumbs = result.rows;
+    return { thumbs, total };
   },
   /**
    * 获取首页跑马灯随机图
    */
   getPictureBox: async () => {
-    return Picture.findAll({
+    return await Picture.findAll({
+      where: {
+        r18: false
+      },
       order: sequelize.random(),
       limit: BoxSize
     });
@@ -63,11 +69,7 @@ module.exports = {
    * 获取单张图片
    */
   get: async picture_id => {
-    return await Picture.findOne({
-      where: {
-        picture_id
-      }
-    });
+    return await Picture.findByPk(picture_id);
   },
   /**
    * 上传图片
@@ -92,6 +94,6 @@ module.exports = {
    * 删除图片
    */
   delete: async pid => {
-    return await Picture.destroy(pid);
+    return await Picture.destroy({ where: { pid } });
   }
 };

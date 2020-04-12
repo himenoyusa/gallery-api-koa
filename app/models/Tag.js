@@ -22,11 +22,7 @@ module.exports = {
    * 获取单张图片所有 tag
    */
   getOnePictureTag: async picture_id => {
-    return Tag.findAll({
-      where: {
-        picture_id
-      }
-    });
+    return Tag.findByPk(picture_id);
   },
   /**
    * 新增 tag

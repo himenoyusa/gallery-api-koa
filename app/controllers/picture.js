@@ -12,7 +12,7 @@ module.exports = {
    * 获取图片列表
    */
   getThumbList: async ctx => {
-    r18 = false;
+    let r18 = false;
     let list = await PictureModel.getThumbList(
       ctx.params.orderType,
       ctx.params.page,
@@ -24,7 +24,7 @@ module.exports = {
    * 获取 R18 图片列表
    */
   getR18ThumbList: async ctx => {
-    r18 = true;
+    let r18 = true;
     let list = await PictureModel.getThumbList(
       ctx.params.orderType,
       ctx.params.page,

@@ -25,11 +25,7 @@ module.exports = {
    * 获取单张图片所有 score
    */
   getOnePictureScore: async picture_id => {
-    return await Score.findAll({
-      where: {
-        picture_id
-      }
-    });
+    return await Score.findByPk(picture_id);
   },
   /**
    * 新增 score
