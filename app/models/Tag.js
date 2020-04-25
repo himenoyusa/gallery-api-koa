@@ -6,14 +6,14 @@ var Tag = sequelize.define(
   {
     tag_id: {
       type: Sequelize.INTEGER,
-      primaryKey: true
+      primaryKey: true,
     },
     picture_id: Sequelize.INTEGER,
     tag: Sequelize.STRING,
-    create_by: Sequelize.INTEGER
+    create_by: Sequelize.INTEGER,
   },
   {
-    timestamps: false
+    timestamps: false,
   }
 );
 
@@ -21,8 +21,12 @@ module.exports = {
   /**
    * 获取单张图片所有 tag
    */
-  getOnePictureTag: async picture_id => {
-    return Tag.findByPk(picture_id);
+  getOnePictureTag: async (picture_id) => {
+    return await Tag.findAll({
+      where: {
+        picture_id,
+      },
+    });
   },
   /**
    * 新增 tag
@@ -31,17 +35,17 @@ module.exports = {
     return await Tag.create({
       picture_id,
       tag,
-      create_by
+      create_by,
     });
   },
   /**
    * 更新 tag
    */
-  update: async picture_id => {
+  update: async (picture_id) => {
     await Tag.update(
       {},
       {
-        where: { picture_id }
+        where: { picture_id },
       }
     ).then(() => {
       return true;
@@ -50,7 +54,7 @@ module.exports = {
   /**
    * 删除 tag
    */
-  delete: async tag_id => {
+  delete: async (tag_id) => {
     return await Tag.destroy({ where: { tag_id } });
-  }
+  },
 };

@@ -6,17 +6,17 @@ var Score = sequelize.define(
   {
     score_id: {
       type: Sequelize.INTEGER,
-      primaryKey: true
+      primaryKey: true,
     },
     picture_id: Sequelize.INTEGER,
     score: Sequelize.INTEGER,
     create_by: Sequelize.INTEGER,
     create_time: Sequelize.INTEGER,
     edit_by: Sequelize.INTEGER,
-    edit_time: Sequelize.INTEGER
+    edit_time: Sequelize.INTEGER,
   },
   {
-    timestamps: false
+    timestamps: false,
   }
 );
 
@@ -24,8 +24,12 @@ module.exports = {
   /**
    * 获取单张图片所有 score
    */
-  getOnePictureScore: async picture_id => {
-    return await Score.findByPk(picture_id);
+  getOnePictureScore: async (picture_id) => {
+    return await Score.findAll({
+      where: {
+        picture_id,
+      },
+    });
   },
   /**
    * 新增 score
@@ -36,17 +40,17 @@ module.exports = {
       picture_id,
       score,
       create_by,
-      create_time: time
+      create_time: time,
     });
   },
   /**
    * 更新 score
    */
-  update: async pid => {},
+  update: async (pid) => {},
   /**
    * 删除 score
    */
-  delete: async score_id => {
+  delete: async (score_id) => {
     return await Score.destroy({ where: { score_id } });
-  }
+  },
 };

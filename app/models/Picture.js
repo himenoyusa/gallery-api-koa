@@ -9,7 +9,7 @@ var Picture = sequelize.define(
   {
     picture_id: {
       type: Sequelize.INTEGER,
-      primaryKey: true
+      primaryKey: true,
     },
     picture_dir: Sequelize.STRING,
     thumb_dir: Sequelize.STRING,
@@ -18,10 +18,10 @@ var Picture = sequelize.define(
     create_time: Sequelize.INTEGER,
     edit_by: Sequelize.INTEGER,
     edit_time: Sequelize.INTEGER,
-    r18: Sequelize.BOOLEAN
+    r18: Sequelize.BOOLEAN,
   },
   {
-    timestamps: false
+    timestamps: false,
   }
 );
 
@@ -43,11 +43,11 @@ module.exports = {
     }
     let result = await Picture.findAndCountAll({
       where: {
-        r18
+        r18,
       },
       order: [orderArray],
       offset: off,
-      limit: PageSize
+      limit: PageSize,
     });
     const total = result.count;
     const thumbs = result.rows;
@@ -59,32 +59,38 @@ module.exports = {
   getPictureBox: async () => {
     return await Picture.findAll({
       where: {
-        r18: false
+        r18: false,
       },
       order: sequelize.random(),
-      limit: BoxSize
+      limit: BoxSize,
     });
   },
   /**
    * 获取单张图片
    */
-  get: async picture_id => {
+  get: async (picture_id) => {
     return await Picture.findByPk(picture_id);
   },
   /**
    * 上传图片
+   * @param picture array
    */
-  upload: async () => {
-    await Picture.create({}).then();
+  upload: async (picture) => {
+    try {
+      const result = await Picture.create({ picture });
+      return true;
+    } catch (e) {
+      return false;
+    }
   },
   /**
    * 更新图片信息
    */
-  update: async picture_id => {
+  update: async (picture_id) => {
     await Picture.update(
       {},
       {
-        where: { picture_id }
+        where: { picture_id },
       }
     ).then(() => {
       return true;
@@ -93,7 +99,7 @@ module.exports = {
   /**
    * 删除图片
    */
-  delete: async pid => {
+  delete: async (pid) => {
     return await Picture.destroy({ where: { pid } });
-  }
+  },
 };
