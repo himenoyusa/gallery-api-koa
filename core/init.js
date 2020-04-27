@@ -1,11 +1,20 @@
 const requireDirectory = require("require-directory");
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
+const koaBody = require("koa-body");
 
 class InitManager {
   static initCore(app) {
     // 入口方法
     app.use(bodyParser());
+    app.use(
+      koaBody({
+        multipart: true,
+        formidable: {
+          maxFileSize: 2000 * 1024 * 1024,
+        },
+      })
+    );
     InitManager.loadConfig();
     InitManager.initLoadRouters(app);
   }

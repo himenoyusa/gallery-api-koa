@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const PictureModel = require("../models/Picture");
 const ScoreModal = require("../models/Score");
 const TagModal = require("../models/Tag");
@@ -53,10 +55,15 @@ module.exports = {
     throw new Response({ picture, scores, tags });
   },
   /**
-   * TODO:df
+   * 上传图片
    */
   upload: async (ctx) => {
-    throw new HttpException("TODO");
+    const { newPicture } = ctx.request.body.files.file; // 获取上传的图片
+    const pictureName = newPicture.name;
+    fs.rename(newPicture.path, `picture/${pictureName}`); // 移动图片
+    const picturePath = `https://www.kanata.moe/picture/${pictureName}`;
+    // TODO: 处理多图片存储;
+    PictureModel.upload(picturePath); // 存储图片到数据库
   },
   /**
    * 删除图片
