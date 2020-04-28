@@ -75,9 +75,19 @@ module.exports = {
    * 上传图片
    * @param picture array
    */
-  upload: async (picture) => {
+  upload: (picture_dir, create_by) => {
+    const create_time = Math.floor(Date.now() / 1000);
     try {
-      const result = await Picture.create({ picture });
+      (async () => {
+        await Picture.create({
+          picture_dir,
+          thumb_dir: "",
+          create_by,
+          edit_by: create_by,
+          create_time,
+          edit_time: create_time,
+        });
+      })();
       return true;
     } catch (e) {
       return false;

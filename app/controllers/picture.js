@@ -58,12 +58,22 @@ module.exports = {
    * 上传图片
    */
   upload: async (ctx) => {
-    const { newPicture } = ctx.request.body.files.file; // 获取上传的图片
+    const uid = 1;
+    console.log(ctx.request.files);
+    const { newPicture } = ctx.request.files; // 获取上传的图片
     const pictureName = newPicture.name;
-    fs.rename(newPicture.path, `picture/${pictureName}`); // 移动图片
-    const picturePath = `https://www.kanata.moe/picture/${pictureName}`;
+    fs.rename(newPicture.path, `${pictureName}`, function (e) {
+      console.log(e);
+      // throw new HttpException("图片上传失败");
+    }); // 移动图片
     // TODO: 处理多图片存储;
-    PictureModel.upload(picturePath); // 存储图片到数据库
+    const picturePath = `${global.config.hostname}picture/${pictureName}`;
+    const result = PictureModel.upload(picturePath, uid); // 存储图片到数据库
+    if (result) {
+      throw new Success("图片上传成功！");
+    } else {
+      throw new HttpException("图片上传失败");
+    }
   },
   /**
    * 删除图片

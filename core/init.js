@@ -12,6 +12,7 @@ class InitManager {
         multipart: true,
         formidable: {
           maxFileSize: 2000 * 1024 * 1024,
+          keepExtensions: true,
         },
       })
     );
