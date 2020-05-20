@@ -67,7 +67,7 @@ module.exports = {
       // throw new HttpException("图片上传失败");
     }); // 移动图片
     // TODO: 处理多图片存储;
-    const picturePath = `${global.config.hostname}picture/${pictureName}`;
+    const picturePath = `${global.config.picture_dir}${pictureName}`;
     const result = PictureModel.upload(picturePath, uid); // 存储图片到数据库
     if (result) {
       throw new Success("图片上传成功！");
