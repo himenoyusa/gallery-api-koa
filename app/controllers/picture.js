@@ -59,16 +59,22 @@ module.exports = {
    */
   upload: async (ctx) => {
     const uid = 1;
-    console.log(ctx.request.files);
-    const { newPicture } = ctx.request.files; // 获取上传的图片
+
+    const { newPicture, thumb } = ctx.request.files; // 获取上传的图片及文件名
     const pictureName = newPicture.name;
-    fs.rename(newPicture.path, `${pictureName}`, function (e) {
+    const thumbName = thumb.name;
+    fs.rename(newPicture.path, `picture/${pictureName}`, function (e) {
       console.log(e);
       // throw new HttpException("图片上传失败");
     }); // 移动图片
-    // TODO: 处理多图片存储;
+    fs.rename(thumb.path, `picture/thumb/${thumbName}`, function (e) {
+      console.log(e);
+      // throw new HttpException("图片上传失败");
+    }); // 移动缩略图
+    // 自定义图片保存路径
     const picturePath = `${global.config.picture_dir}${pictureName}`;
-    const result = PictureModel.upload(picturePath, uid); // 存储图片到数据库
+    const thumbPath = `${global.config.picture_dir}thumb/${thumbName}`;
+    const result = PictureModel.upload(picturePath, thumbPath, uid); // 存储图片到数据库
     if (result) {
       throw new Success("图片上传成功！");
     } else {

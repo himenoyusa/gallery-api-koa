@@ -75,13 +75,13 @@ module.exports = {
    * 上传图片
    * @param picture array
    */
-  upload: (picture_dir, create_by) => {
+  upload: (picture_dir, thumb_dir, create_by) => {
     const create_time = Math.floor(Date.now() / 1000);
     try {
       (async () => {
         await Picture.create({
           picture_dir,
-          thumb_dir: "",
+          thumb_dir,
           create_by,
           edit_by: create_by,
           create_time,

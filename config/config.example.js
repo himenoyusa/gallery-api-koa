@@ -8,8 +8,8 @@ var config = {
   },
   environment: "dev", // or prod
   secretKey: "123456",
-  hostname: "https://www.kanata.moe/",
-  picture_dir: "https://www.kanata.moe/picture/",
+  hostname: "https://localhost:3000/",
+  picture_dir: "https://localhost:3000/picture/",
 };
 
 module.exports = config;
