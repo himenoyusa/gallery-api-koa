@@ -60,20 +60,27 @@ module.exports = {
   upload: async (ctx) => {
     const uid = 1;
 
-    const { newPicture, thumb } = ctx.request.files; // 获取上传的图片及文件名
+    const { newPicture } = ctx.request.files; // 获取上传的图片及文件名
+    const { thumb } = ctx.request.body;
     const pictureName = newPicture.name;
-    const thumbName = thumb.name;
+
+    // 转换缩略图格式并保存文件
+    var base64Data = thumb.replace(/^data:image\/\w+;base64,/, "");
+    var dataBuffer = new Buffer(base64Data, "base64");
+    fs.writeFile(`picture/thumb/${pictureName}.png`, dataBuffer, function (e) {
+      // throw new HttpException("图片上传失败");
+    });
+
     fs.rename(newPicture.path, `picture/${pictureName}`, function (e) {
-      console.log(e);
       // throw new HttpException("图片上传失败");
     }); // 移动图片
-    fs.rename(thumb.path, `picture/thumb/${thumbName}`, function (e) {
-      console.log(e);
-      // throw new HttpException("图片上传失败");
-    }); // 移动缩略图
+    // fs.rename(thumb.path, `picture/thumb/${thumbName}`, function (e) {
+    //   console.log(e);
+    //   // throw new HttpException("图片上传失败");
+    // }); // 移动缩略图
     // 自定义图片保存路径
     const picturePath = `${global.config.picture_dir}${pictureName}`;
-    const thumbPath = `${global.config.picture_dir}thumb/${thumbName}`;
+    const thumbPath = `${global.config.picture_dir}thumb/${pictureName}.png`;
     const result = PictureModel.upload(picturePath, thumbPath, uid); // 存储图片到数据库
     if (result) {
       throw new Success("图片上传成功！");
