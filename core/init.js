@@ -1,12 +1,13 @@
 const requireDirectory = require("require-directory");
 const Router = require("koa-router");
-const bodyParser = require("koa-bodyparser");
+// const bodyParser = require("koa-bodyparser");
 const koaBody = require("koa-body");
 
 class InitManager {
   static initCore(app) {
     // 入口方法
-    app.use(bodyParser());
+    // app.use(bodyParser());
+    // bodyParser 不能与 body 同时使用！！！！
     app.use(
       koaBody({
         multipart: true,

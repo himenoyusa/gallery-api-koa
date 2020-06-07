@@ -7,6 +7,7 @@ const catchError = require("./middlewares/exception");
 const app = new Koa();
 app.use(async (ctx, next) => {
   console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
+
   await next();
 });
 
@@ -18,10 +19,11 @@ router.all("/*", async (ctx, next) => {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization, x-requested-with"
   );
+
   await next();
 });
-app.use(router.routes()).use(router.allowedMethods());
 
+app.use(router.routes()).use(router.allowedMethods());
 // 全局错误处理
 app.use(catchError);
 
