@@ -75,7 +75,7 @@ module.exports = {
    * 上传图片
    * @param picture array
    */
-  upload: (picture_dir, thumb_dir, create_by) => {
+  upload: (picture_dir, thumb_dir, create_by, r18 = false) => {
     const create_time = Math.floor(Date.now() / 1000);
     try {
       (async () => {
@@ -83,6 +83,7 @@ module.exports = {
           picture_dir,
           thumb_dir,
           create_by,
+          r18,
           edit_by: create_by,
           create_time,
           edit_time: create_time,

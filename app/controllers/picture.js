@@ -60,14 +60,14 @@ module.exports = {
   upload: async (ctx) => {
     const uid = 1;
 
-    const { newPicture } = ctx.request.files; // 获取上传的图片及文件名
-    const { thumb } = ctx.request.body;
+    const { newPicture } = ctx.request.files; // 获取上传的图片
+    const { thumb, r18 = false } = ctx.request.body; // 获取上传的 base64 缩略图及参数
     const pictureName = newPicture.name;
 
     // 转换缩略图格式并保存文件
     var base64Data = thumb.replace(/^data:image\/\w+;base64,/, "");
     var dataBuffer = new Buffer(base64Data, "base64");
-    fs.writeFile(`picture/thumb/${pictureName}.png`, dataBuffer, function (e) {
+    fs.writeFile(`picture/thumb/${pictureName}.jpg`, dataBuffer, function (e) {
       // throw new HttpException("图片上传失败");
     });
 
@@ -80,8 +80,8 @@ module.exports = {
     // }); // 移动缩略图
     // 自定义图片保存路径
     const picturePath = `${global.config.picture_dir}${pictureName}`;
-    const thumbPath = `${global.config.picture_dir}thumb/${pictureName}.png`;
-    const result = PictureModel.upload(picturePath, thumbPath, uid); // 存储图片到数据库
+    const thumbPath = `${global.config.picture_dir}thumb/${pictureName}.jpg`;
+    const result = PictureModel.upload(picturePath, thumbPath, uid, r18); // 存储图片到数据库
     if (result) {
       throw new Success("图片上传成功！");
     } else {
