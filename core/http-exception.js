@@ -7,7 +7,7 @@ class HttpException extends Error {
     this.statusCode = statusCode;
   }
 }
-
+// TODO: 修改接口的 errorCode 为 statusCode
 class Success extends HttpException {
   constructor(msg = "操作成功", errorCode = 2001) {
     super();
@@ -61,5 +61,5 @@ module.exports = {
   ParameterException: ParameterException,
   Success,
   Response,
-  Forbidden
+  Forbidden,
 };

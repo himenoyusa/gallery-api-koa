@@ -9,7 +9,7 @@ router.get(
   PictureController.getR18ThumbList
 );
 router.get("/pictureBox", PictureController.getPictureBox);
-router.get("/picture/:pid", PictureController.get);
+router.get("/picture", PictureController.get);
 router.post("/picture", PictureController.upload);
 router.delete("/picture/:pid", new Auth().m, PictureController.delete);
 

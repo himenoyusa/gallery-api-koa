@@ -47,12 +47,13 @@ module.exports = {
    * 获取单张图片
    */
   get: async (ctx) => {
-    const v = await new PidValidator().validate(ctx);
-    const pid = v.get("path.pid");
+    // const v = await new PidValidator().validate(ctx);
+    // const pid = v.get("path.pid");
+    let { pid } = ctx.query;
     let picture = await PictureModel.get(pid);
     let scores = await ScoreModal.getOnePictureScore(pid);
     let tags = await TagModal.getOnePictureTag(pid);
-    throw new Response({ picture, scores, tags });
+    throw new Response({ ...picture.dataValues, scores, tags });
   },
   /**
    * 上传图片
