@@ -14,6 +14,10 @@ const userSchema = new Schema({
   business: { type: String, select: false },
   verified: { type: Boolean, default: false },
   level: { type: String, enum: ["guest", "vip", "admin"], default: "guest" },
+  following: {
+    type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    select: false,
+  },
 });
 
 module.exports = model("User", userSchema);

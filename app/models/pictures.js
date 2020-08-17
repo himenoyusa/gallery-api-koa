@@ -7,7 +7,7 @@ const userSchema = new Schema({
   pic_dir: { type: String, required: true },
   thumb_dir: { type: String, required: true },
   total_score: { type: Number, default: 0 },
-  created_by: { type: String, required: true },
+  created_by: { type: Schema.Types.ObjectId, ref: "User" },
   limit: { type: Boolean, default: false },
 });
 
