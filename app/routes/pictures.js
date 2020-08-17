@@ -2,6 +2,7 @@ const Router = require("koa-router");
 const router = new Router({ prefix: "/pictures" });
 const jwt = require("koa-jwt");
 const {
+  checkPicExists,
   find,
   limitFind,
   upload,
@@ -9,7 +10,11 @@ const {
   limitFindById,
   update,
   del,
+  followPics,
+  unfollowPics,
+  listFollowPics,
 } = require("../controllers/pictures");
+const { route } = require("./users");
 
 const secret = process.env.secret;
 
@@ -20,7 +25,10 @@ router.get("/limit", auth, limitFind);
 router.get("/:id", findById);
 router.get("/limit/:id", auth, limitFindById);
 router.post("/", auth, upload);
-router.patch("/:id", auth, update);
+router.patch("/:id", auth, checkPicExists, update);
 router.delete("/:id", auth, del);
+router.put("/followPics/:id", auth, checkPicExists, followPics);
+router.delete("/followPics/:id", auth, checkPicExists, unfollowPics);
+router.get("/followPics/:id", listFollowPics);
 
 module.exports = router;

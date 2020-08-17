@@ -18,6 +18,10 @@ const userSchema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: "User" }],
     select: false,
   },
+  followPics: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Picture" }],
+    select: false,
+  },
 });
 
 module.exports = model("User", userSchema);

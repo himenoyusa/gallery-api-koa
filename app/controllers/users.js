@@ -20,9 +20,6 @@ class UserCtl {
   }
   // 检查请求的目标用户是否存在
   async checkUserExist(ctx, next) {
-    ctx.verifyParams({
-      id: { type: "string", required: true },
-    });
     const user = await User.findById(ctx.params.id);
     if (!user) {
       ctx.throw(404, "用户不存在");
@@ -38,7 +35,13 @@ class UserCtl {
 
   // 查询所有用户
   async find(ctx) {
-    ctx.body = await User.find().ne("level", "admin");
+    let { page = 1, per_page = 10 } = ctx.query;
+    page = Math.max(page * 1, 1) - 1;
+    per_page = Math.max(per_page * 1, 1);
+    ctx.body = await User.find()
+      .ne("level", "admin")
+      .skip(page * per_page)
+      .limit(per_page);
   }
 
   // 查询单个用户
@@ -131,9 +134,6 @@ class UserCtl {
 
   // 查询用户关注列表
   async listFollowing(ctx) {
-    ctx.verifyParams({
-      id: { type: "string", required: true },
-    });
     const user = await User.findById(ctx.params.id)
       .select("+following")
       .populate("following");
@@ -158,18 +158,12 @@ class UserCtl {
 
   // 查询用户粉丝列表
   async listFollowers(ctx) {
-    ctx.verifyParams({
-      id: { type: "string", required: true },
-    });
     const users = await User.find({ following: ctx.params.id });
     ctx.body = users;
   }
 
   // 取消关注
   async unfollow(ctx) {
-    ctx.verifyParams({
-      id: { type: "string", required: true },
-    });
     const me = await User.findById(ctx.state.user._id).select("+following");
     const index = me.following
       .map((id) => id.toString())

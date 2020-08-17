@@ -1,18 +1,49 @@
 const Picture = require("../models/pictures");
-const jsonwebtoken = require("jsonwebtoken");
+const User = require("../models/users");
 const path = require("path");
 
 class PictureCtl {
+  /**
+   * ---------------------------------------
+   * 中间件
+   * ---------------------------------------
+   */
+  async checkPicExists(ctx, next) {
+    const picture = await Picture.findById(ctx.params.id);
+    if (!picture) {
+      ctx.throw(404, "图片不存在");
+    }
+    await next();
+  }
+
+  /**
+   * ---------------------------------------
+   * 控制器方法
+   * ---------------------------------------
+   */
+
   async find(ctx) {
-    ctx.body = await Picture.find().ne("limit", true);
+    let { page = 1, per_page = 10 } = ctx.query;
+    page = Math.max(page * 1, 1) - 1;
+    per_page = Math.max(per_page * 1, 1);
+    ctx.body = await Picture.find({ limit: false })
+      .skip(page * per_page)
+      .limit(per_page);
   }
 
   async limitFind(ctx) {
-    ctx.body = await Picture.find().ne("limit", false);
+    let { page = 1, per_page = 10 } = ctx.query;
+    page = Math.max(page * 1, 1) - 1;
+    per_page = Math.max(per_page * 1, 1);
+    ctx.body = await Picture.find({ limit: true })
+      .skip(page * per_page)
+      .limit(per_page);
   }
 
   async findById(ctx) {
-    const picture = await Picture.findById(ctx.params.id).ne("limit", true);
+    const picture = await Picture.findById(ctx.params.id)
+      .ne("limit", true)
+      .populate("tags");
     if (!picture) {
       ctx.throw(404, "图片不存在");
     }
@@ -72,6 +103,40 @@ class PictureCtl {
     const delUser = await User.findByIdAndRemove(ctx.params.id);
     if (!delUser) {
       ctx.throw(404);
+    }
+    ctx.status = 204;
+  }
+
+  // 查询用户收藏的图片
+  async listFollowPics(ctx) {
+    const user = await User.findById(ctx.params.id)
+      .select("+followPics")
+      .populate("followPics");
+    if (!user) {
+      ctx.throw(404, "用户不存在");
+    }
+    ctx.body = user.followPics;
+  }
+
+  // 收藏图片
+  async followPics(ctx) {
+    const me = await User.findById(ctx.state.user._id).select("+followPics");
+    if (!me.followPics.map((id) => id.toString()).includes(ctx.params.id)) {
+      me.followPics.push(ctx.params.id);
+      me.save();
+    }
+    ctx.status = 204;
+  }
+
+  // 取消收藏
+  async unfollowPics(ctx) {
+    const me = await User.findById(ctx.state.user._id).select("+followPics");
+    const index = me.followPics
+      .map((id) => id.toString())
+      .indexOf(ctx.params.id);
+    if (index > -1) {
+      me.followPics.splice(index, 1);
+      me.save();
     }
     ctx.status = 204;
   }

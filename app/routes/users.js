@@ -20,7 +20,7 @@ const secret = process.env.secret;
 
 const auth = jwt({ secret });
 
-router.get("/", auth, checkOwner, find);
+router.get("/", find);
 router.get("/:id", findById);
 router.post("/", create);
 router.patch("/:id", auth, checkOwner, update);

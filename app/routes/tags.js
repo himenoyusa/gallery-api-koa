@@ -1,21 +1,16 @@
 const Router = require("koa-router");
 const router = new Router({ prefix: "/tags" });
+const jwt = require("koa-jwt");
+const { find, create, findByTag, del } = require("../controllers/tags");
 
-router.get("/", (ctx) => {
-  ctx.body = db;
-});
-router.get("/:id", (ctx) => {
-  ctx.body = { name: "yusa" };
-});
-router.post("/", (ctx) => {
-  db.push(ctx.request.body);
-  ctx.body = ctx.request.body;
-});
-router.put("/:id", (ctx) => {
-  ctx.body = { name: "yusa2" };
-});
-router.delete("/:id", (ctx) => {
-  ctx.status = 204;
-});
+const secret = process.env.secret;
+
+const auth = jwt({ secret });
+
+router.get("/", find);
+router.get("/:id", findByTag);
+router.post("/", auth, create);
+// router.patch("/:id", auth, update);
+router.delete("/:id", auth, del);
 
 module.exports = router;
