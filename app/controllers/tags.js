@@ -2,25 +2,50 @@ const Tag = require("../models/tags");
 const Picture = require("../models/pictures");
 
 class TagsCtl {
+  // 查询所有 tag
   async find(ctx) {
-    ctx.body = await Tag.find();
+    let { page = 1, per_page = 10 } = ctx.query;
+    page = Math.max(page * 1, 1) - 1;
+    per_page = Math.max(per_page * 1, 1);
+    ctx.body = await Tag.find()
+      .skip(page * per_page)
+      .limit(per_page);
   }
 
-  async findByTag(ctx) {
-    ctx.verifyParams({
-      tag: { type: "string", required: true },
-    });
-    const pictures = await Picture.find({ tags: new RegExp(ctx.query.q) });
-    ctx.body = pictures;
-  }
-
+  // 为图片添加 tag
   async create(ctx) {
     ctx.verifyParams({
-      name: { type: "string", required: true },
+      tag: { type: "string", required: true },
       avatar_url: { type: "string", required: false },
     });
-    const tag = await new Tag(ctx.request.body).save();
-    ctx.body = tag;
+    const picture = await Picture.findById(ctx.params.id).select("+tags");
+    const tag = await Tag.findOne({ tag: ctx.request.body.tag });
+    // 新 tag 直接加入图片的 tags 中并保存
+    if (!tag) {
+      const newTag = await new Tag(ctx.request.body).save();
+      picture.tags.push(newTag._id);
+      picture.save();
+      ctx.status = 204;
+      return;
+    }
+    // 旧 tag 但该图片未添加
+    if (!picture.tags.includes(tag._id)) {
+      picture.tags.push(tag._id);
+      picture.save();
+      ctx.status = 204;
+      return;
+    }
+    ctx.throw(409, "tag 已存在");
+  }
+
+  // 查询包含 tag 的所有图片
+  async findPicsByTag(ctx) {
+    let { page = 1, per_page = 10 } = ctx.query;
+    page = Math.max(page * 1, 1) - 1;
+    per_page = Math.max(per_page * 1, 1);
+    ctx.body = await Picture.find({ tags: ctx.params.id })
+      .skip(page * per_page)
+      .limit(per_page);
   }
 
   async del(ctx) {

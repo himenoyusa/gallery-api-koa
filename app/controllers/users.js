@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const jsonwebtoken = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 class UserCtl {
   /**
@@ -33,7 +34,7 @@ class UserCtl {
    * -----------------------------------------------
    */
 
-  // 查询所有用户
+  // 查询所有非管理员用户
   async find(ctx) {
     let { page = 1, per_page = 10 } = ctx.query;
     page = Math.max(page * 1, 1) - 1;
@@ -69,12 +70,18 @@ class UserCtl {
       name: { type: "string", required: true },
       password: { type: "string", required: true },
     });
+    // 密码 hash 加密
+    ctx.request.body.password = await bcrypt.hash(
+      ctx.request.body.password,
+      10
+    );
     const { name } = ctx.request.body;
     const repeatedUser = await User.findOne({ name });
     if (repeatedUser) {
       ctx.throw(409, "用户已经被占用");
     }
     const newUser = await new User(ctx.request.body).save();
+    newUser.password = "";
     ctx.body = newUser;
   }
 
@@ -90,6 +97,14 @@ class UserCtl {
       locations: { type: "array", itemType: "string", required: false },
       business: { type: "string", required: false },
     });
+    // 密码 hash 加密
+    if ("password" in ctx.request.body) {
+      ctx.request.body.password = await bcrypt.hash(
+        ctx.request.body.password,
+        10
+      );
+    }
+
     const updateUser = await User.findByIdAndUpdate(
       ctx.params.id,
       ctx.request.body
@@ -107,7 +122,7 @@ class UserCtl {
     });
     const delUser = await User.findByIdAndRemove(ctx.params.id);
     if (!delUser) {
-      ctx.throw(404);
+      ctx.throw(404, "用户不存在");
     }
     ctx.status = 204;
   }
@@ -118,8 +133,13 @@ class UserCtl {
       name: { type: "string", required: true },
       password: { type: "string", required: true },
     });
-    const user = await User.findOne(ctx.request.body);
+    const { name: requireName, password } = ctx.request.body;
+    const user = await User.findOne({ name: requireName }).select("+password");
     if (!user) {
+      ctx.throw(401, "用户名或密码不正确");
+    }
+    // verify the password
+    if (!bcrypt.compareSync(password, user.password)) {
       ctx.throw(401, "用户名或密码不正确");
     }
     if (user.verified === false) {
@@ -127,7 +147,7 @@ class UserCtl {
     }
     const { _id, name, level } = user;
     const token = jsonwebtoken.sign({ _id, name, level }, process.env.secret, {
-      expiresIn: "1d",
+      expiresIn: "1 days",
     });
     ctx.body = { token };
   }
@@ -145,9 +165,6 @@ class UserCtl {
 
   // 关注用户
   async follow(ctx) {
-    ctx.verifyParams({
-      id: { type: "string", required: true },
-    });
     const me = await User.findById(ctx.state.user._id).select("+following");
     if (!me.following.map((id) => id.toString()).includes(ctx.params.id)) {
       me.following.push(ctx.params.id);

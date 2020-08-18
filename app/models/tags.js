@@ -4,8 +4,8 @@ const { Schema, model } = mongoose;
 
 const tagSchema = new Schema({
   __v: { type: Number, select: false },
-  name: { type: String, required: true },
-  avatar_url: { type: String },
+  tag: { type: String, required: true },
+  avatar_url: String,
 });
 
 module.exports = model("Tag", tagSchema);

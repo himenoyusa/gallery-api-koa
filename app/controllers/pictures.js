@@ -53,7 +53,7 @@ class PictureCtl {
   }
 
   async limitFindById(ctx) {
-    const picture = await Picture.findById(ctx.params.id);
+    const picture = await Picture.findById(ctx.params.id).populate("tags");
     if (!picture) {
       ctx.throw(404, "图片不存在");
     }
