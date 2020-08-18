@@ -1,5 +1,5 @@
 const Router = require("koa-router");
-const router = new Router({ prefix: "/users" });
+const router = new Router({ prefix: "/api/users" });
 const jwt = require("koa-jwt");
 const {
   checkOwner,

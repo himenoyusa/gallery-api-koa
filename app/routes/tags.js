@@ -1,5 +1,5 @@
 const Router = require("koa-router");
-const router = new Router({ prefix: "/tags" });
+const router = new Router({ prefix: "/api/tags" });
 const jwt = require("koa-jwt");
 const { find, create, findByTag, del } = require("../controllers/tags");
 

@@ -1,5 +1,5 @@
 const Router = require("koa-router");
-const router = new Router({ prefix: "/scores" });
+const router = new Router({ prefix: "/api/scores" });
 
 router.get("/", (ctx) => {
   ctx.body = db;

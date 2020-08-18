@@ -23,10 +23,12 @@ class PictureCtl {
    */
 
   async find(ctx) {
-    let { page = 1, per_page = 10 } = ctx.query;
+    let { page = 1, per_page = 10, order = "_id" } = ctx.query;
     page = Math.max(page * 1, 1) - 1;
     per_page = Math.max(per_page * 1, 1);
+    order = ["_id", "total_score"].includes(order) ? order : "_id";
     ctx.body = await Picture.find({ limit: false })
+      .sort({ order: -1 })
       .skip(page * per_page)
       .limit(per_page);
   }
@@ -60,6 +62,8 @@ class PictureCtl {
 
   async upload(ctx) {
     ctx.verifyParams({
+      uploadPic: { type: "string", required: true },
+      uploadThumb: { type: "string", required: true },
       limit: { type: "boolean", required: false },
     });
     const { uploadPic, uploadThumb } = ctx.request.files;
@@ -91,7 +95,7 @@ class PictureCtl {
       ctx.request.body
     );
     if (!updateUser) {
-      ctx.throw(404);
+      ctx.throw(404, "用户不存在");
     }
     ctx.body = updateUser;
   }
@@ -102,7 +106,7 @@ class PictureCtl {
     });
     const delUser = await User.findByIdAndRemove(ctx.params.id);
     if (!delUser) {
-      ctx.throw(404);
+      ctx.throw(404, "用户不存在");
     }
     ctx.status = 204;
   }

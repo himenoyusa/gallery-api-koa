@@ -1,5 +1,5 @@
 const Router = require("koa-router");
-const router = new Router({ prefix: "/pictures" });
+const router = new Router({ prefix: "/api/pictures" });
 const jwt = require("koa-jwt");
 const {
   checkPicExists,
