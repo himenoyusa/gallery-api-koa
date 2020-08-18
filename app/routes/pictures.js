@@ -14,7 +14,6 @@ const {
   unfollowPics,
   listFollowPics,
 } = require("../controllers/pictures");
-const { route } = require("./users");
 
 const secret = process.env.secret;
 

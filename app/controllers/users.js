@@ -147,7 +147,7 @@ class UserCtl {
     }
     const { _id, name, level } = user;
     const token = jsonwebtoken.sign({ _id, name, level }, process.env.secret, {
-      expiresIn: "1 days",
+      expiresIn: "1d",
     });
     ctx.body = { token };
   }

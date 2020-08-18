@@ -23,8 +23,8 @@ const userSchema = new Schema(
       type: [{ type: Schema.Types.ObjectId, ref: "Picture" }],
       select: false,
     },
-    createdAt: Number,
-    updatedAt: Number,
+    createdAt: { type: Number, select: false },
+    updatedAt: { type: Number, select: false },
   },
   {
     // Make Mongoose use Unix time (seconds since Jan 1, 1970)

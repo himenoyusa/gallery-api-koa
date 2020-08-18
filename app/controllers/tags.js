@@ -20,6 +20,7 @@ class TagsCtl {
     });
     const picture = await Picture.findById(ctx.params.id).select("+tags");
     const tag = await Tag.findOne({ tag: ctx.request.body.tag });
+
     // 新 tag 直接加入图片的 tags 中并保存
     if (!tag) {
       const newTag = await new Tag(ctx.request.body).save();
@@ -28,13 +29,16 @@ class TagsCtl {
       ctx.status = 204;
       return;
     }
-    // 旧 tag 但该图片未添加
+
+    // 旧 tag 但图片未添加
     if (!picture.tags.includes(tag._id)) {
       picture.tags.push(tag._id);
       picture.save();
       ctx.status = 204;
       return;
     }
+
+    // tag 已存在
     ctx.throw(409, "tag 已存在");
   }
 
@@ -48,6 +52,7 @@ class TagsCtl {
       .limit(per_page);
   }
 
+  // TODO: 删除功能待完善
   async del(ctx) {
     const picture = await Picture.findById(ctx.params.picId).select("+tags");
     const index = picture.tags
