@@ -2,13 +2,12 @@ const Router = require("koa-router");
 const router = new Router({ prefix: "/api/scores" });
 
 router.get("/", (ctx) => {
-  ctx.body = db;
+  ctx.body = "he";
 });
 router.get("/:id", (ctx) => {
   ctx.body = { name: "yusa" };
 });
 router.post("/", (ctx) => {
-  db.push(ctx.request.body);
   ctx.body = ctx.request.body;
 });
 router.put("/:id", (ctx) => {

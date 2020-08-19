@@ -13,6 +13,7 @@ class CommentsCtl {
       .limit(per_page);
   }
 
+  // 添加评论
   async create(ctx) {
     ctx.verifyParams({
       content: { type: "string", required: true },

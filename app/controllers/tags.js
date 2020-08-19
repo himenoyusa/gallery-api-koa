@@ -59,8 +59,8 @@ class TagsCtl {
       .map((id) => id.toString())
       .indexOf(ctx.params.id);
     if (index > -1) {
-      me.following.splice(index, 1);
-      me.save();
+      picture.following.splice(index, 1);
+      picture.save();
     }
     ctx.status = 204;
   }

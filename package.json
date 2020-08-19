@@ -19,9 +19,11 @@
     "koa-parameter": "^3.0.1",
     "koa-router": "^9.4.0",
     "koa-static": "^5.0.0",
-    "mongoose": "^5.10.0"
+    "mongoose": "^5.10.0",
+    "xss": "^1.0.8"
   },
   "devDependencies": {
+    "eslint": "^7.7.0",
     "nodemon": "^2.0.4"
   }
 }
