@@ -62,26 +62,28 @@ class PictureCtl {
 
   async upload(ctx) {
     ctx.verifyParams({
-      uploadPic: { type: "string", required: true },
-      uploadThumb: { type: "string", required: true },
       limit: { type: "boolean", required: false },
     });
-    const { uploadPic, uploadThumb } = ctx.request.files;
-    const pic_dir = `${ctx.origin}/uploads/${path.basename(uploadPic.path)}`;
-    const thumb_dir = `${ctx.origin}/uploads/${path.basename(
-      uploadThumb.path
-    )}`;
+    try {
+      const { uploadPic, uploadThumb } = ctx.request.files;
+      const pic_dir = `${ctx.origin}/uploads/${path.basename(uploadPic.path)}`;
+      const thumb_dir = `${ctx.origin}/uploads/${path.basename(
+        uploadThumb.path
+      )}`;
 
-    const { limit } = ctx.request.body;
-    const created_by = ctx.state.user._id;
+      const { limit } = ctx.request.body;
+      const created_by = ctx.state.user._id;
 
-    const newPic = await new Picture({
-      pic_dir,
-      thumb_dir,
-      limit,
-      created_by,
-    }).save();
-    ctx.body = newPic;
+      const newPic = await new Picture({
+        pic_dir,
+        thumb_dir,
+        limit,
+        created_by,
+      }).save();
+      ctx.body = newPic;
+    } catch (e) {
+      ctx.throw(422, "图片上传失败");
+    }
   }
 
   async update(ctx) {

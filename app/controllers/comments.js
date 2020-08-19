@@ -1,4 +1,5 @@
 const Comment = require("../models/comments");
+const xss = require("xss");
 
 class CommentsCtl {
   // 查询单个图片的所有评论
@@ -20,9 +21,10 @@ class CommentsCtl {
     });
     const uid = ctx.state.user._id;
     const pid = ctx.params.id;
+    const content = xss(ctx.request.body.content);
 
     const comment = await new Comment({
-      ...ctx.request.body,
+      content,
       commenter: uid,
       picture_id: pid,
     }).save();

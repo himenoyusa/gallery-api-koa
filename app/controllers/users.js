@@ -67,8 +67,8 @@ class UserCtl {
   // 新增用户，默认未审核
   async create(ctx) {
     ctx.verifyParams({
-      name: { type: "string", required: true },
-      password: { type: "string", required: true },
+      name: { type: "email", required: true, allowEmpty: false },
+      password: { type: "string", required: true, allowEmpty: false },
     });
     // 密码 hash 加密
     ctx.request.body.password = await bcrypt.hash(
@@ -88,8 +88,8 @@ class UserCtl {
   // 修改用户资料
   async update(ctx) {
     ctx.verifyParams({
-      name: { type: "string", required: false },
-      password: { type: "string", required: false },
+      name: { type: "email", required: false, allowEmpty: false },
+      password: { type: "string", required: false, allowEmpty: false },
       avatar_url: { type: "string", required: false },
       gender: { type: "string", required: false },
       headline: { type: "string", required: false },

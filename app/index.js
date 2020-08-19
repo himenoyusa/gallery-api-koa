@@ -5,6 +5,7 @@ const error = require("koa-json-error");
 const parameter = require("koa-parameter");
 const mongoose = require("mongoose");
 const static = require("koa-static");
+const swagger = require("koa2-swagger-ui");
 const path = require("path");
 const routing = require("./routes");
 
@@ -12,6 +13,14 @@ const routing = require("./routes");
 require("dotenv").config();
 
 // 开启静态服务
+app.use(
+  swagger({
+    routePrefix: "/docs",
+    swaggerOptions: {
+      url: "http://localhost:3001/swaggerDoc",
+    },
+  })
+);
 app.use(static(path.join(__dirname, "public")));
 
 // 连接 mongoDB 数据库
