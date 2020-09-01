@@ -20,6 +20,8 @@
     "koa-router": "^9.4.0",
     "koa-static": "^5.0.0",
     "mongoose": "^5.10.0",
+    "mysql2": "^2.1.0",
+    "sequelize": "^6.3.4",
     "xss": "^1.0.8"
   },
   "devDependencies": {

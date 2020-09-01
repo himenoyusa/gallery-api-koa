@@ -3,7 +3,7 @@ const app = new Koa();
 const body = require("koa-body");
 const error = require("koa-json-error");
 const parameter = require("koa-parameter");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const static = require("koa-static");
 const swagger = require("koa2-swagger-ui");
 const path = require("path");
@@ -24,15 +24,15 @@ app.use(
 app.use(static(path.join(__dirname, "public")));
 
 // 连接 mongoDB 数据库
-mongoose.connect(
-  process.env.connectionString,
-  {
-    auth: { user: process.env.user, password: process.env.password },
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  (err) => console.log("mongoDB 连接成功", err)
-);
+// mongoose.connect(
+//   process.env.connectionString,
+//   {
+//     auth: { user: process.env.user, password: process.env.password },
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   },
+//   (err) => console.log("mongoDB 连接成功", err)
+// );
 
 // 错误处理
 app.use(
@@ -48,7 +48,7 @@ app.use(
     multipart: true,
     formidable: {
       maxFileSize: 2000 * 1024 * 1024,
-      uploadDir: path.join(__dirname, "/public/uploads"),
+      uploadDir: path.join(__dirname, "/public/pictures"),
       keepExtensions: true,
     },
   })
