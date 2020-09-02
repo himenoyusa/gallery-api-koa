@@ -1,7 +1,6 @@
 const path = require("path");
 const fs = require("fs");
 const Picture = require("../models/Picture");
-const User = require("../models/User");
 const Collection = require("../models/Collection");
 
 class PictureCtl {
@@ -75,6 +74,7 @@ class PictureCtl {
         }
       );
 
+      // 生成图片路径
       const thumb_url = `${ctx.origin}/pictures/thumbs/${path.basename(
         uploadThumb.path
       )}`;
@@ -114,7 +114,7 @@ class PictureCtl {
       }
     );
     if (!update[0]) {
-      ctx.throw(404, "图片不存在");
+      ctx.throw(409, "图片无需更新");
       return;
     }
     ctx.body = { ...ctx.request.body };

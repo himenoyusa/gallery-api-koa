@@ -12,8 +12,8 @@ CREATE TABLE `pictures` (
   `created_by` int(10) unsigned NOT NULL,
   `updated_by` int(10) unsigned NOT NULL,
   `limit` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` int(10) NOT NULL,
-  `updated_at` int(10) NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
   PRIMARY KEY (`picture_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -23,8 +23,8 @@ CREATE TABLE `scores` (
   `score` tinyint(3) unsigned NOT NULL,
   `picture_id` int(10) unsigned NOT NULL,
   `created_by` int(10) unsigned NOT NULL,
-  `created_at` int(10) NOT NULL,
-  `updated_at` int(10) NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
   PRIMARY KEY (`score_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -35,8 +35,8 @@ CREATE TABLE `tags` (
   `tag_avatar_url` varchar(200),
   `picture_id` int(10) unsigned NOT NULL,
   `created_by` int(10) unsigned NOT NULL,
-  `created_at` int(10) NOT NULL,
-  `updated_at` int(10) NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
   PRIMARY KEY (`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -46,8 +46,8 @@ CREATE TABLE `comments` (
   `comment` varchar(200) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `picture_id` int(10) unsigned NOT NULL,
-  `created_at` int(10) NOT NULL,
-  `updated_at` int(10) NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -56,8 +56,8 @@ CREATE TABLE `followers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `followed_id` int(10) unsigned NOT NULL,
-  `created_at` int(10) NOT NULL,
-  `updated_at` int(10) NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -66,8 +66,8 @@ CREATE TABLE `collections` (
   `collection_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `picture_id` int(10) unsigned NOT NULL,
-  `created_at` int(10) NOT NULL,
-  `updated_at` int(10) NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
   PRIMARY KEY (`collection_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -83,7 +83,7 @@ CREATE TABLE `users` (
   `gender` enum('男','女','未知') NOT NULL DEFAULT '未知',
   `headline` char(255),
   `age` tinyint(3),
-  `created_at` int(10) NOT NULL,
-  `updated_at` int(10) NOT NULL,
+  `created_at` datetime,
+  `updated_at` datetime,
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
