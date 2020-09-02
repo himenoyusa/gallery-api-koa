@@ -1,3 +1,4 @@
+const xss = require("xss");
 const Tag = require("../models/Tag");
 const Picture = require("../models/Picture");
 Tag.hasOne(Picture, {
@@ -34,7 +35,7 @@ class TagCtl {
       tag: { type: "string", required: true },
     });
     const { picture_id } = ctx.params;
-    const { tag } = ctx.request.body;
+    const tag = xss(ctx.request.body.tag);
     const { uid: created_by } = ctx.state.user;
 
     const sameTag = await Tag.findOne({ where: { picture_id, tag } });
