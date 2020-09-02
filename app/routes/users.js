@@ -22,6 +22,13 @@ const {
 
 /**
  * @swagger
+ * tags:
+ *    name: User
+ *    description: "用户接口"
+ */
+
+/**
+ * @swagger
  * /api/users:
  *    get:
  *      tags:

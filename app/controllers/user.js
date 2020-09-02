@@ -129,21 +129,19 @@ class UserCtl {
     const uid = ctx.params.uid;
     const { offset, limit } = ctx.pagination;
 
-    // TODO: 解决左关联查询结果
     Follower.hasOne(User, { sourceKey: "followed_id", foreignKey: "uid" });
     ctx.body = await Follower.findAndCountAll({
       where: { user_id: uid },
       offset,
       limit,
       // 左关联 Picture 表
-      include: [
-        {
-          model: User,
-          through: {
-            attributes: ["name", "avatar", "gender", "headline", "age"],
-          },
+      include: {
+        model: User,
+        // TODO: 解决左关联查询结果
+        through: {
+          attributes: ["name", "avatar", "gender", "headline", "age"],
         },
-      ],
+      },
     });
   }
 
@@ -160,7 +158,7 @@ class UserCtl {
       offset,
       limit,
       // 左关联 Picture 表
-      include: [{ model: User }],
+      include: { model: User },
     });
   }
 
@@ -212,7 +210,7 @@ class UserCtl {
       offset,
       limit,
       // 左关联 Picture 表
-      include: [{ model: Picture }],
+      include: { model: Picture },
     });
   }
 }
