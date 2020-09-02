@@ -9,4 +9,5 @@ module.exports = maria.define("pictures", {
   thumb_url: { type: DataTypes.STRING },
   collection_count: { type: DataTypes.INTEGER },
   score: { type: DataTypes.INTEGER },
+  limit: { type: DataTypes.BOOLEAN },
 });

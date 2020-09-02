@@ -3,7 +3,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerDefinition = {
   info: {
     title: "gallery",
-    version: "1.0.0",
+    version: "2.0.0",
     description: "gallery 网站后台 koa api",
   },
   host: `localhost:3001`,
