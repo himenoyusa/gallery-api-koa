@@ -1,38 +1,43 @@
-const Comment = require("../models/comments");
 const xss = require("xss");
+const Comment = require("../models/Comment");
+const User = require("../models/User");
+Comment.hasOne(User, {
+  sourceKey: "user_id",
+  foreignKey: "uid",
+});
 
 class CommentsCtl {
-  // 查询单个图片的所有评论
-  async find(ctx) {
-    let { page = 1, per_page = 10 } = ctx.query;
-    page = Math.max(page * 1, 1) - 1;
-    per_page = Math.max(per_page * 1, 1);
-
-    ctx.body = await Comment.find({ picture_id: ctx.params.id })
-      .populate("commenter")
-      .skip(page * per_page)
-      .limit(per_page);
-  }
-
-  // 添加评论
-  async create(ctx) {
-    ctx.verifyParams({
-      content: { type: "string", required: true },
+  /**
+   * 查询图片所有评论
+   */
+  async listComments(ctx) {
+    const { offset, limit } = ctx.pagination;
+    const { picture_id } = ctx.params;
+    ctx.body = await Comment.findAndCountAll({
+      where: { picture_id },
+      offset,
+      limit,
+      include: { model: User },
     });
-    const uid = ctx.state.user._id;
-    const pid = ctx.params.id;
-    const content = xss(ctx.request.body.content);
-
-    const comment = await new Comment({
-      content,
-      commenter: uid,
-      picture_id: pid,
-    }).save();
-    ctx.body = comment;
   }
 
-  async del(ctx) {
-    await Comment.findByIdAndRemove(ctx.params.id);
+  /**
+   * 添加图片评论
+   */
+  async addComment(ctx) {
+    const { picture_id } = ctx.params;
+    const { uid: user_id } = ctx.state.user;
+    const comment = xss(ctx.request.body.comment);
+    await Comment.create({ user_id, picture_id, comment });
+    ctx.body = { comment };
+  }
+
+  /**
+   * 删除评论
+   */
+  async delComment(ctx) {
+    const { comment_id } = ctx.params;
+    await Comment.destroy({ where: { comment_id } });
     ctx.status = 204;
   }
 }

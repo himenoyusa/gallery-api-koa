@@ -5,7 +5,7 @@ Tag.hasOne(Picture, {
   foreignKey: "picture_id",
 });
 
-class TagsCtl {
+class TagCtl {
   // 查询所有 tag
   async findAllTags(ctx) {
     const { offset, limit } = ctx.pagination;
@@ -55,4 +55,4 @@ class TagsCtl {
   }
 }
 
-module.exports = new TagsCtl();
+module.exports = new TagCtl();
