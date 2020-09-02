@@ -138,6 +138,10 @@ class PictureCtl {
     });
     if (!star) {
       await Collection.create({ picture_id, user_id });
+      await Picture.update(
+        { collection_count: picture.collection_count + 1 },
+        { where: { picture_id } }
+      );
     }
 
     ctx.status = 204;
@@ -147,7 +151,23 @@ class PictureCtl {
   async unStarPicture(ctx) {
     const picture_id = ctx.params.picture_id * 1;
     const { uid: user_id } = ctx.state.user;
-    await Collection.destroy({ where: { picture_id, user_id } });
+
+    const picture = await Picture.findByPk(picture_id);
+    if (!picture) {
+      ctx.throw(404, "图片不存在");
+      return;
+    }
+
+    const star = await Collection.findOne({
+      where: { picture_id, user_id },
+    });
+    if (star) {
+      await Collection.destroy({ where: { picture_id, user_id } });
+      await Picture.update(
+        { collection_count: picture.collection_count - 1 },
+        { where: { picture_id } }
+      );
+    }
     ctx.status = 204;
   }
 
