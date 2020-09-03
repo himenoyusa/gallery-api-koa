@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const Picture = require("../models/Picture");
 const Collection = require("../models/Collection");
+const Score = require("../models/Score");
 
 class PictureCtl {
   /**
@@ -39,19 +40,23 @@ class PictureCtl {
    * 查询特定图片
    */
   async findPicture(ctx) {
-    const picture = await Picture.findByPk(ctx.params.picture_id);
+    const { picture_id } = ctx.params;
+    const picture = await Picture.findByPk(picture_id);
     if (!picture || picture.limit) {
       ctx.throw(404, "图片不存在");
     }
-    ctx.body = picture;
+    const scores = await Score.findAll({ where: { picture_id } });
+    ctx.body = { ...picture.dataValues, scores };
   }
 
   async findLimitPicture(ctx) {
-    const picture = await Picture.findByPk(ctx.params.picture_id);
+    const { picture_id } = ctx.params;
+    const picture = await Picture.findByPk(picture_id);
     if (!picture) {
       ctx.throw(404, "图片不存在");
     }
-    ctx.body = picture;
+    const scores = await Score.findAll({ where: { picture_id } });
+    ctx.body = { ...picture.dataValues, scores };
   }
 
   /**

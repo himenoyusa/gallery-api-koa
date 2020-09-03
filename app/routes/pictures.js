@@ -11,6 +11,7 @@ const {
   starPicture,
   unStarPicture,
 } = require("../controllers/picture");
+const { addScore, delScore } = require("../controllers/score");
 
 // 引入中间件
 const jwtAuth = require("../middlewares/jwtAuth");
@@ -206,6 +207,10 @@ router.put("/collections/:picture_id", jwtAuth, starPicture);
  *      - Authorization
  */
 router.delete("/collections/:picture_id", jwtAuth, unStarPicture);
+
+router.post("/scores/:picture_id", jwtAuth, addScore);
+
+router.delete("/scores/:score_id", jwtAuth, delScore);
 
 /**
  * @swagger
