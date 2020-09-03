@@ -208,8 +208,65 @@ router.put("/collections/:picture_id", jwtAuth, starPicture);
  */
 router.delete("/collections/:picture_id", jwtAuth, unStarPicture);
 
+/**
+ * @swagger
+ * /api/pictures/scores/{picture_id}:
+ *    post:
+ *      tags:
+ *      - Picture
+ *      description: 添加图片评分
+ *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: 用户登录 token
+ *        required: true
+ *      - in: path
+ *        name: picture_id
+ *        type: string
+ *        description: 图片 id
+ *        required: true
+ *      - in: formData
+ *        name: score
+ *        type: number
+ *        description: 分数
+ *        required: true
+ *      responses:
+ *        204:
+ *          description: No Content
+ *        403:
+ *          description: Forbidden
+ *      security:
+ *      - Authorization
+ */
 router.post("/scores/:picture_id", jwtAuth, addScore);
 
+/**
+ * @swagger
+ * /api/pictures/scores/{score_id}:
+ *    delete:
+ *      tags:
+ *      - Picture
+ *      description: 删除图片评分
+ *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: 用户登录 token
+ *        required: true
+ *      - in: path
+ *        name: score_id
+ *        type: string
+ *        description: 评分 id
+ *        required: true
+ *      responses:
+ *        204:
+ *          description: No Content
+ *        403:
+ *          description: Forbidden
+ *      security:
+ *      - Authorization
+ */
 router.delete("/scores/:score_id", jwtAuth, delScore);
 
 /**
