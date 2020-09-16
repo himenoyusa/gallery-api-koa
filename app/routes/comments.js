@@ -46,7 +46,7 @@ const setPagination = require("../middlewares/setPagination");
  *        404:
  *          description: Not Found
  */
-router.get("/pictures/:picture_id", setPagination, listComments);
+router.get("/picture/:picture_id", setPagination, listComments);
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.get("/pictures/:picture_id", setPagination, listComments);
  *      security:
  *      - Authorization
  */
-router.post("/pictures/:picture_id", jwtAuth, addComment);
+router.post("/picture/:picture_id", jwtAuth, addComment);
 
 /**
  * @swagger

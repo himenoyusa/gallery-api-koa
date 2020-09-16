@@ -8,6 +8,9 @@ class ScoreCtl {
     const { picture_id } = ctx.params;
     const { uid: created_by } = ctx.state.user;
     const score = ctx.request.body.score * 1;
+    if (await Score.findOne({ where: { picture_id, created_by } })) {
+      ctx.throw(409, "不能重复评分");
+    }
     await Score.create({ picture_id, created_by, score });
     ctx.status = 204;
   }

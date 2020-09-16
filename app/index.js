@@ -19,7 +19,10 @@ app.use(async (ctx, next) => {
     "Access-Control-Allow-Headers",
     "Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild"
   );
-  ctx.set("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
+  ctx.set(
+    "Access-Control-Allow-Methods",
+    "PUT, POST,PATCH, GET, DELETE, OPTIONS"
+  );
   if (ctx.method == "OPTIONS") {
     ctx.body = 200;
   } else {

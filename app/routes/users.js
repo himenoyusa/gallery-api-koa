@@ -165,7 +165,7 @@ router.patch("/:uid", jwtAuth, checkOwner, update);
 
 /**
  * @swagger
- * /api/users:
+ * /api/users/login:
  *    post:
  *      tags:
  *      - User

@@ -2,6 +2,7 @@ const Router = require("koa-router");
 const router = new Router({ prefix: "/api/tags" });
 const {
   findAllTags,
+  findPictureTags,
   findPicturesByTag,
   addTag,
   delTag,
@@ -68,6 +69,8 @@ router.get("/", setPagination, findAllTags);
  *          description: Not Found
  */
 router.get("/:tag", setPagination, findPicturesByTag);
+
+router.get("/picture/:picture_id", findPictureTags);
 
 /**
  * @swagger

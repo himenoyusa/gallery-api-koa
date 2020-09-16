@@ -8,6 +8,7 @@ const {
   findLimitPicture,
   updatePicture,
   del,
+  getStarStatus,
   starPicture,
   unStarPicture,
 } = require("../controllers/picture");
@@ -151,6 +152,8 @@ router.post("/", jwtAuth, uploadPicture);
  *      - Authorization
  */
 router.patch("/:picture_id", jwtAuth, updatePicture);
+
+router.get("/collections/:picture_id", jwtAuth, getStarStatus);
 
 /**
  * @swagger

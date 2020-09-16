@@ -64,37 +64,32 @@ class PictureCtl {
    */
   async uploadPicture(ctx) {
     try {
-      const { uploadPic, uploadThumb } = ctx.request.files;
+      const { uploadPic } = ctx.request.files;
+      const { uploadThumb } = ctx.request.body; // 获取上传的 base64 缩略
+      const fileName = path.basename(uploadPic.path);
 
-      // 移动缩略图
-      await fs.rename(
-        uploadThumb.path,
-        `${__dirname}/../public/pictures/thumbs/${path.basename(
-          uploadThumb.path
-        )}`,
-        (err) => {
-          if (err) {
-            throw err;
-          }
-        }
+      // 转换缩略图格式并保存文件
+      let base64Data = uploadThumb.replace(/^data:image\/\w+;base64,/, "");
+      let dataBuffer = Buffer.alloc(base64Data.length, base64Data, "base64");
+      fs.writeFile(
+        `${__dirname}/../public/pictures/thumbs/${fileName}.jpg`,
+        dataBuffer,
+        function (e) {}
       );
 
-      // 生成图片路径
-      const thumb_url = `${ctx.origin}/pictures/thumbs/${path.basename(
-        uploadThumb.path
-      )}`;
-      const picture_url = `${ctx.origin}/pictures/${path.basename(
-        uploadPic.path
-      )}`;
       const created_by = ctx.state.user.uid;
+      const picture_url = `${ctx.origin}/pictures/${fileName}`;
+      const thumb_url = `${ctx.origin}/pictures/thumbs/${fileName}.jpg`;
 
       const newPic = await Picture.create({
         picture_url,
         thumb_url,
         created_by,
       });
+      newPic.picture_id = newPic.null;
       ctx.body = newPic;
     } catch (e) {
+      console.log(e);
       ctx.throw(422, "图片上传失败");
     }
   }
@@ -123,6 +118,20 @@ class PictureCtl {
       return;
     }
     ctx.body = { ...ctx.request.body };
+  }
+
+  /**
+   * 查询图片是否收藏
+   */
+  async getStarStatus(ctx) {
+    const picture_id = ctx.params.picture_id * 1;
+    const { uid: user_id } = ctx.state.user;
+    const status = await Collection.findOne({ where: { user_id, picture_id } });
+    if (status) {
+      ctx.body = status;
+    } else {
+      ctx.throw(404, "图片未收藏");
+    }
   }
 
   /**

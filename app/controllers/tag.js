@@ -16,6 +16,12 @@ class TagCtl {
     });
   }
 
+  // 查询特定图片的所有 tag
+  async findPictureTags(ctx) {
+    const { picture_id } = ctx.params;
+    ctx.body = await Tag.findAll({ where: { picture_id } });
+  }
+
   // 查询包含特定 tag 的所有图片
   async findPicturesByTag(ctx) {
     const { offset, limit } = ctx.pagination;
