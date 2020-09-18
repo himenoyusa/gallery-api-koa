@@ -1,4 +1,5 @@
 .env
+trigger.sql
 node_modules/
 memo.md
 app/public
