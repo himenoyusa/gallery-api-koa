@@ -10,48 +10,89 @@ const swaggerSpec = require("../swagger.conf");
  *    type: object
  *    properties:
  *      picture_id:
- *        type: string
+ *        type: number
  *      picture_url:
  *        type: string
  *      thumb_url:
  *        type: string
  *      created_by:
- *        type: string
+ *        type: number
  *      updated_by:
- *        type: string
+ *        type: number
  *      created_at:
- *        type: number
+ *        type: string
  *      updated_at:
- *        type: number
+ *        type: string
  *      limit:
  *        type: boolean
  *      collection_count:
  *        type: number
+ *      scores:
+ *        type: array
+ *        items:
+ *          $ref: '#/definitions/score'
+ *  score:
+ *    type: object
+ *    properties:
+ *      score_id:
+ *        type: number
+ *      picture_id:
+ *        type: number
+ *      created_by:
+ *        type: number
  *      score:
  *        type: number
+ *      created_at:
+ *        type: string
+ *      updated_at:
+ *        type: string
  *  comment:
  *    type: object
  *    properties:
  *      comment_id:
- *        type: string
- *      content:
+ *        type: number
+ *      comment:
  *        type: string
  *      picture_id:
- *        type: string
- *      commenter:
- *        type: string
- *      createdAt:
  *        type: number
- *      updatedAt:
+ *      user_id:
  *        type: number
+ *      created_at:
+ *        type: string
+ *      updated_at:
+ *        type: string
+ *      user:
+ *        type: object
+ *        $ref: '#/definitions/user'
  *  tag:
  *    type: object
  *    properties:
  *      tag_id:
- *        type: string
+ *        type: number
+ *      picture_id:
+ *        type: number
+ *      created_by:
+ *        type: number
  *      tag:
  *        type: string
- *      avatar_url:
+ *      tag_avatar_url:
+ *        type: string
+ *      created_at:
+ *        type: string
+ *      updated_at:
+ *        type: string
+ *  collection:
+ *    type: object
+ *    properties:
+ *      collection_id:
+ *        type: number
+ *      user_id:
+ *        type: number
+ *      picture_id:
+ *        type: number
+ *      created_at:
+ *        type: string
+ *      updated_at:
  *        type: string
  *  user:
  *    type: object
@@ -81,6 +122,10 @@ const swaggerSpec = require("../swagger.conf");
  *        - vip
  *        - guest
  *      headline:
+ *        type: string
+ *      created_at:
+ *        type: string
+ *      updated_at:
  *        type: string
  *
  * securityDefinitions:

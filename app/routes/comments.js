@@ -18,7 +18,7 @@ const setPagination = require("../middlewares/setPagination");
 
 /**
  * @swagger
- * /api/comments/pictures/{picture_id}:
+ * /api/comments/picture/{picture_id}:
  *    get:
  *      tags:
  *      - Comment
@@ -40,9 +40,14 @@ const setPagination = require("../middlewares/setPagination");
  *      responses:
  *        200:
  *          schema:
- *            type: array
- *            items:
- *              $ref: '#/definitions/comment'
+ *            type: object
+ *            properties:
+ *              count:
+ *                type: number
+ *              rows:
+ *                type: array
+ *                items:
+ *                  $ref: '#/definitions/comment'
  *        404:
  *          description: Not Found
  */

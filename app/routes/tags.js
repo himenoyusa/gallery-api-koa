@@ -38,9 +38,14 @@ const setPagination = require("../middlewares/setPagination");
  *      responses:
  *        200:
  *          schema:
- *            type: array
- *            items:
- *              $ref: '#/definitions/tag'
+ *            type: object
+ *            properties:
+ *              count:
+ *                type: number
+ *              rows:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/tag'
  *        404:
  *          description: Not Found
  */
@@ -59,17 +64,47 @@ router.get("/", setPagination, findAllTags);
  *        type: string
  *        description: 标签名
  *        required: true
+ *      - in: query
+ *        name: page
+ *        description: 分页页码
+ *        required: false
+ *      - in: query
+ *        name: per_page
+ *        description: 分页每页数量
+ *        required: false
  *      responses:
  *        200:
  *          schema:
  *            type: array
  *            items:
- *              $ref: '#/definitions/picture'
+ *              $ref: '#/definitions/tag'
  *        404:
  *          description: Not Found
  */
 router.get("/:tag", setPagination, findPicturesByTag);
 
+/**
+ * @swagger
+ * /api/tags/picture/{picture_id}:
+ *    get:
+ *      tags:
+ *      - Tag
+ *      description: 查询特定图片的所有标签
+ *      parameters:
+ *      - in: path
+ *        name: picture_id
+ *        type: number
+ *        description: 图片 id
+ *        required: true
+ *      responses:
+ *        200:
+ *          schema:
+ *            type: array
+ *            items:
+ *              $ref: '#/definitions/tag'
+ *        404:
+ *          description: Not Found
+ */
 router.get("/picture/:picture_id", findPictureTags);
 
 /**

@@ -44,9 +44,14 @@ const setPagination = require("../middlewares/setPagination");
  *      responses:
  *        200:
  *          schema:
- *            type: array
- *            items:
- *              $ref: '#/definitions/picture'
+ *            type: object
+ *            properties:
+ *              count:
+ *                type: number
+ *              rows:
+ *                type: array
+ *                items:
+ *                  $ref: '#/definitions/picture'
  *        404:
  *          description: Not Found
  */
@@ -153,6 +158,33 @@ router.post("/", jwtAuth, uploadPicture);
  */
 router.patch("/:picture_id", jwtAuth, updatePicture);
 
+/**
+ * @swagger
+ * /api/pictures/collections/{picture_id}:
+ *    get:
+ *      tags:
+ *      - Picture
+ *      description: 查询特定图片是否已收藏
+ *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: 用户登录 token
+ *        required: true
+ *      - in: path
+ *        name: picture_id
+ *        type: string
+ *        description: 图片 id
+ *        required: true
+ *      responses:
+ *        200:
+ *          schema:
+ *            $ref: '#/definitions/collection'
+ *        403:
+ *          description: Forbidden
+ *      security:
+ *      - Authorization
+ */
 router.get("/collections/:picture_id", jwtAuth, getStarStatus);
 
 /**

@@ -48,9 +48,14 @@ const {
  *      responses:
  *        200:
  *          schema:
- *            type: array
- *            items:
- *              $ref: '#/definitions/user'
+ *            type: object
+ *            properties:
+ *              count:
+ *                type: number
+ *              rows:
+ *                type: array
+ *                items:
+ *                  $ref: '#/definitions/user'
  *        404:
  *          description: Not Found
  */
@@ -66,7 +71,7 @@ router.get("/", setPagination, findAllUsers);
  *      parameters:
  *      - in: path
  *        name: uid
- *        type: string
+ *        type: number
  *        description: 用户 id
  *        required: true
  *      responses:
@@ -122,7 +127,7 @@ router.post("/", registration);
  *        required: true
  *      - in: path
  *        name: uid
- *        type: string
+ *        type: number
  *        description: 用户 id
  *        required: true
  *      - in: body
@@ -138,6 +143,10 @@ router.post("/", registration);
  *      - in: body
  *        name: gender
  *        type: string
+ *        enum:
+ *        - 男
+ *        - 女
+ *        - 未知
  *        description: 用户性别
  *        required: false
  *      - in: body
@@ -202,7 +211,7 @@ router.post("/login", login);
  *      parameters:
  *      - in: path
  *        name: uid
- *        type: string
+ *        type: number
  *        description: 用户 id
  *        required: true
  *      - in: query
@@ -236,7 +245,7 @@ router.get("/:uid/following", setPagination, listFollowing);
  *      parameters:
  *      - in: path
  *        name: uid
- *        type: string
+ *        type: number
  *        description: 用户 id
  *        required: true
  *      - in: query
@@ -270,7 +279,7 @@ router.get("/:uid/followers", setPagination, listFollowers);
  *      parameters:
  *      - in: path
  *        name: uid
- *        type: string
+ *        type: number
  *        description: 用户 id
  *        required: true
  *      - in: header
@@ -298,7 +307,7 @@ router.put("/following/:uid", jwtAuth, follow);
  *      parameters:
  *      - in: path
  *        name: uid
- *        type: string
+ *        type: number
  *        description: 用户 id
  *        required: true
  *      - in: header
@@ -326,7 +335,7 @@ router.delete("/following/:uid", jwtAuth, unfollow);
  *      parameters:
  *      - in: path
  *        name: uid
- *        type: string
+ *        type: number
  *        description: 用户 id
  *        required: true
  *      - in: query
