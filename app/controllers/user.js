@@ -116,7 +116,7 @@ class UserCtl {
       { uid, avatar_url, gender, headline, age, level },
       process.env.secret,
       {
-        expiresIn: "1d",
+        expiresIn: "30d",
       }
     );
     ctx.body = { token };
