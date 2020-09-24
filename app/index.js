@@ -5,6 +5,7 @@ const error = require("koa-json-error");
 const parameter = require("koa-parameter");
 // const mongoose = require("mongoose");
 const static = require("koa-static");
+const mount = require("koa-mount");
 const swagger = require("koa2-swagger-ui");
 const path = require("path");
 const routing = require("./routes");
@@ -39,7 +40,8 @@ app.use(
     },
   })
 );
-app.use(static(path.join(__dirname, "public")));
+// app.use(static(path.join(__dirname, "public")));
+app.use(mount("/api", static(path.join(__dirname, "public"))));
 
 // 连接 mongoDB 数据库
 // mongoose.connect(

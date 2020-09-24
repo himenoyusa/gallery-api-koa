@@ -78,8 +78,8 @@ class PictureCtl {
       );
 
       const created_by = ctx.state.user.uid;
-      const picture_url = `${ctx.origin}/pictures/${fileName}`;
-      const thumb_url = `${ctx.origin}/pictures/thumbs/${fileName}.jpg`;
+      const picture_url = `http://img.sena.moe/api/pictures/${fileName}`;
+      const thumb_url = `http://img.sena.moe/api/pictures/thumbs/${fileName}.jpg`;
 
       const newPic = await Picture.create({
         picture_url,
@@ -89,7 +89,6 @@ class PictureCtl {
       newPic.picture_id = newPic.null;
       ctx.body = newPic;
     } catch (e) {
-      console.log(e);
       ctx.throw(422, "图片上传失败");
     }
   }
