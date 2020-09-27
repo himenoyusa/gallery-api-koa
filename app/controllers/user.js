@@ -111,7 +111,13 @@ class UserCtl {
     if (user.verified === false) {
       ctx.throw(401, "用户未通过审核");
     }
-    const { uid, avatar_url, gender, headline, age, level } = user;
+
+    const { uid, avatar_url, age } = user;
+    // 中文转码
+    let { gender, headline, level } = user;
+    gender = encodeURIComponent(gender);
+    headline = encodeURIComponent(headline);
+    level = encodeURIComponent(level);
     const token = jsonwebtoken.sign(
       { uid, avatar_url, gender, headline, age, level },
       process.env.secret,

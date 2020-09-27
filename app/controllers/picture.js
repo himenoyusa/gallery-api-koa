@@ -11,7 +11,7 @@ class PictureCtl {
   async find(ctx) {
     const { offset, limit } = ctx.pagination;
     let orderType = ctx.query.order_type;
-    orderType = ["picture_id", "score", "collection_count"].includes(orderType)
+    orderType = ["picture_id", "collection_count"].includes(orderType)
       ? orderType
       : "picture_id";
     ctx.body = await Picture.findAndCountAll({
@@ -78,8 +78,8 @@ class PictureCtl {
       );
 
       const created_by = ctx.state.user.uid;
-      const picture_url = `http://img.sena.moe/api/pictures/${fileName}`;
-      const thumb_url = `http://img.sena.moe/api/pictures/thumbs/${fileName}.jpg`;
+      const picture_url = `${process.env.domain}/pictures/${fileName}`;
+      const thumb_url = `${process.env.domain}/pictures/thumbs/${fileName}.jpg`;
 
       const newPic = await Picture.create({
         picture_url,
