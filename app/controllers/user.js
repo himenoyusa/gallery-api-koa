@@ -114,12 +114,13 @@ class UserCtl {
 
     const { uid, avatar_url, age } = user;
     // 中文转码
-    let { gender, headline, level } = user;
+    let { gender, name, headline, level } = user;
     gender = encodeURIComponent(gender);
+    name = encodeURIComponent(name);
     headline = encodeURIComponent(headline);
     level = encodeURIComponent(level);
     const token = jsonwebtoken.sign(
-      { uid, avatar_url, gender, headline, age, level },
+      { uid, name, email, avatar_url, gender, headline, age, level },
       process.env.secret,
       {
         expiresIn: "30d",
