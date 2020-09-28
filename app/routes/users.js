@@ -13,6 +13,7 @@ const {
   findById,
   registration,
   update,
+  updateAvatar,
   login,
   listFollowing,
   listFollowers,
@@ -200,6 +201,11 @@ router.patch("/:uid", jwtAuth, checkOwner, update);
  *          description: 参数错误
  */
 router.post("/login", login);
+
+/**
+ * 修改用户头像
+ */
+router.post("/:uid/avatar", jwtAuth, checkOwner, updateAvatar);
 
 /**
  * @swagger

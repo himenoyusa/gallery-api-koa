@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const Picture = require("../models/Picture");
+const User = require("../models/User");
 const Collection = require("../models/Collection");
 const Score = require("../models/Score");
 
@@ -25,7 +26,7 @@ class PictureCtl {
   async limitFind(ctx) {
     const { offset, limit } = ctx.pagination;
     let orderType = ctx.query.order_type;
-    orderType = ["picture_id", "score", "collection_count"].includes(orderType)
+    orderType = ["picture_id", "collection_count"].includes(orderType)
       ? orderType
       : "picture_id";
     ctx.body = await Picture.findAndCountAll({
@@ -45,8 +46,9 @@ class PictureCtl {
     if (!picture || picture.limit) {
       ctx.throw(404, "图片不存在");
     }
+    const users = await User.findOne({ where: { uid: picture.created_by } });
     const scores = await Score.findAll({ where: { picture_id } });
-    ctx.body = { ...picture.dataValues, scores };
+    ctx.body = { ...picture.dataValues, scores, username: users.name };
   }
 
   async findLimitPicture(ctx) {
@@ -55,8 +57,9 @@ class PictureCtl {
     if (!picture) {
       ctx.throw(404, "图片不存在");
     }
+    const users = await User.findOne({ where: { uid: picture.created_by } });
     const scores = await Score.findAll({ where: { picture_id } });
-    ctx.body = { ...picture.dataValues, scores };
+    ctx.body = { ...picture.dataValues, scores, username: users.name };
   }
 
   /**

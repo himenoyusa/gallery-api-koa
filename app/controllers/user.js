@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
+const fs = require("fs");
+const path = require("path");
 const User = require("../models/User");
 const Collection = require("../models/Collection");
 const Picture = require("../models/Picture");
@@ -64,7 +66,6 @@ class UserCtl {
     const uid = ctx.params.uid;
     ctx.verifyParams({
       name: { type: "string", required: false, allowEmpty: false },
-      avatar: { type: "string", required: false, allowEmpty: false },
       gender: {
         type: "enum",
         values: ["男", "女", "未知"],
@@ -85,10 +86,33 @@ class UserCtl {
       { ...ctx.request.body },
       {
         where: { uid },
-        fields: ["name", "avatar", "gender", "headline", "age"],
+        fields: ["name", "gender", "headline", "age"],
       }
     );
     ctx.body = { ...ctx.request.body };
+  }
+
+  /**
+   * 更新头像
+   */
+  async updateAvatar(ctx) {
+    const { uid } = ctx.params;
+    try {
+      const { newAvatar } = ctx.request.files;
+      const fileName = path.basename(newAvatar.path);
+      // 移动图片并重命名
+      fs.rename(
+        `${__dirname}/../public/pictures/${fileName}`,
+        `${__dirname}/../public/avatars/${uid}.jpg`,
+        (e) => {}
+      );
+
+      const avatar_url = `${process.env.domain}/avatars/${uid}.jpg`;
+      await User.update({ avatar_url }, { where: { uid } });
+      ctx.status = 204;
+    } catch (e) {
+      ctx.throw(422, "头像更新失败");
+    }
   }
 
   /**
