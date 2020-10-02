@@ -160,18 +160,17 @@ class UserCtl {
     const uid = ctx.params.uid;
     const { offset, limit } = ctx.pagination;
 
-    Follower.hasOne(User, { sourceKey: "followed_id", foreignKey: "uid" });
+    Follower.hasOne(User, {
+      sourceKey: "followed_id",
+      foreignKey: "uid",
+    });
     ctx.body = await Follower.findAndCountAll({
       where: { user_id: uid },
       offset,
       limit,
-      // 左关联 Picture 表
       include: {
         model: User,
-        // TODO: 解决左关联查询结果
-        through: {
-          attributes: ["name", "avatar", "gender", "headline", "age"],
-        },
+        attributes: ["name", "avatar_url", "gender", "headline", "age"],
       },
     });
   }
@@ -183,13 +182,18 @@ class UserCtl {
     const uid = ctx.params.uid;
     const { offset, limit } = ctx.pagination;
 
-    Follower.hasMany(User, { sourceKey: "user_id", foreignKey: "uid" });
+    Follower.hasOne(User, {
+      sourceKey: "user_id",
+      foreignKey: "uid",
+    });
     ctx.body = await Follower.findAndCountAll({
       where: { followed_id: uid },
       offset,
       limit,
-      // 左关联 Picture 表
-      include: { model: User },
+      include: {
+        model: User,
+        attributes: ["name", "avatar_url", "gender", "headline", "age"],
+      },
     });
   }
 
@@ -242,6 +246,19 @@ class UserCtl {
       limit,
       // 左关联 Picture 表
       include: { model: Picture },
+    });
+  }
+
+  /**
+   * 查询用户图片上传
+   */
+  async findUserUploads(ctx) {
+    const uid = ctx.params.uid;
+    const { offset, limit } = ctx.pagination;
+    ctx.body = await Picture.findAndCountAll({
+      where: { created_by: uid },
+      offset,
+      limit,
     });
   }
 }

@@ -9,6 +9,7 @@ const checkOwner = require("../middlewares/checkOwner");
 // 引入控制器
 const {
   findUserCollections,
+  findUserUploads,
   findAllUsers,
   findById,
   registration,
@@ -364,5 +365,10 @@ router.delete("/following/:uid", jwtAuth, unfollow);
  *          description: Not Found
  */
 router.get("/:uid/collections", setPagination, findUserCollections);
+
+/**
+ * 查询用户图片上传
+ */
+router.get("/:uid/uploads", setPagination, findUserUploads);
 
 module.exports = router;
