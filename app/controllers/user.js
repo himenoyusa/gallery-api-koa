@@ -170,7 +170,7 @@ class UserCtl {
       limit,
       include: {
         model: User,
-        attributes: ["name", "avatar_url", "gender", "headline", "age"],
+        attributes: ["uid", "name", "avatar_url", "gender", "headline", "age"],
       },
     });
   }
@@ -192,7 +192,7 @@ class UserCtl {
       limit,
       include: {
         model: User,
-        attributes: ["name", "avatar_url", "gender", "headline", "age"],
+        attributes: ["uid", "name", "avatar_url", "gender", "headline", "age"],
       },
     });
   }
