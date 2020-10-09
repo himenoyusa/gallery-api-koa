@@ -82,6 +82,7 @@ router.get("/", setPagination, findAllTags);
  *          description: Not Found
  */
 router.get("/:tag", setPagination, findPicturesByTag);
+router.get("/:tag/limit", setPagination, findPicturesByTag);
 
 /**
  * @swagger
