@@ -6,7 +6,7 @@ const swaggerDefinition = {
     version: "2.0.0",
     description: "gallery 网站后台 koa api",
   },
-  host: `localhost:3001`,
+  host: process.env.domain.split("//")[1],
   basePath: "/",
 };
 

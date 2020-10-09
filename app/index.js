@@ -34,9 +34,9 @@ app.use(async (ctx, next) => {
 // 开启静态服务
 app.use(
   swagger({
-    routePrefix: "/docs",
+    routePrefix: "/api/docs",
     swaggerOptions: {
-      url: "http://localhost:3001/swaggerDoc",
+      url: `${process.env.domain}/api/swaggerDoc`,
     },
   })
 );

@@ -1,5 +1,5 @@
 const Router = require("koa-router");
-const router = new Router({ prefix: "/swaggerDoc" });
+const router = new Router({ prefix: "/api/swaggerDoc" });
 const swaggerSpec = require("../swagger.conf");
 
 /**
