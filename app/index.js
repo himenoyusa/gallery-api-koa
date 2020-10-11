@@ -36,7 +36,7 @@ app.use(
   swagger({
     routePrefix: "/api/docs",
     swaggerOptions: {
-      url: `${process.env.domain}/api/swaggerDoc`,
+      url: `${process.env.domain}/swaggerDoc`,
     },
   })
 );
