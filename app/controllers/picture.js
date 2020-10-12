@@ -4,6 +4,8 @@ const Picture = require("../models/Picture");
 const User = require("../models/User");
 const Collection = require("../models/Collection");
 const Score = require("../models/Score");
+const Comment = require("../models/Comment");
+const Tag = require("../models/Tag");
 
 class PictureCtl {
   /**
@@ -192,7 +194,18 @@ class PictureCtl {
    */
   async del(ctx) {
     // TODO: 待完善
-    ctx.status = 204;
+    const { picture_id } = ctx.params;
+    try {
+      await Picture.destroy({ where: { picture_id } });
+      await Collection.destroy({ where: { picture_id } });
+      await Comment.destroy({ where: { picture_id } });
+      await Score.destroy({ where: { picture_id } });
+      await Tag.destroy({ where: { picture_id } });
+
+      ctx.status = 204;
+    } catch (e) {
+      ctx.throw(422, "图片删除失败");
+    }
   }
 }
 

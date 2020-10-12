@@ -16,6 +16,7 @@ const {
   update,
   updateAvatar,
   login,
+  checkFollower,
   listFollowing,
   listFollowers,
   follow,
@@ -275,6 +276,11 @@ router.get("/:uid/following", setPagination, listFollowing);
  *          description: Not Found
  */
 router.get("/:uid/followers", setPagination, listFollowers);
+
+/**
+ * 查询是否已关注用户
+ */
+router.get("/following/:uid", jwtAuth, checkFollower);
 
 /**
  * @swagger

@@ -154,10 +154,23 @@ class UserCtl {
   }
 
   /**
+   * 查询是否已关注
+   */
+  async checkFollower(ctx) {
+    const { uid: follower_id } = ctx.params;
+    const { uid: user_id } = ctx.state.user;
+    const state = await Follower.findOne({ where: { user_id, follower_id } });
+    if (!state) {
+      ctx.throw(404, "用户未关注");
+    }
+    ctx.status = 204;
+  }
+
+  /**
    * 查询用户关注
    */
   async listFollowing(ctx) {
-    const uid = ctx.params.uid;
+    const { uid } = ctx.params;
     const { offset, limit } = ctx.pagination;
 
     Follower.hasOne(User, {
