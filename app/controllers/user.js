@@ -157,9 +157,9 @@ class UserCtl {
    * 查询是否已关注
    */
   async checkFollower(ctx) {
-    const { uid: follower_id } = ctx.params;
+    const { uid: followed_id } = ctx.params;
     const { uid: user_id } = ctx.state.user;
-    const state = await Follower.findOne({ where: { user_id, follower_id } });
+    const state = await Follower.findOne({ where: { user_id, followed_id } });
     if (!state) {
       ctx.throw(404, "用户未关注");
     }
